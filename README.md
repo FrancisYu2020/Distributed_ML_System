@@ -1,22 +1,21 @@
-# MP3-hangy6-tian23 Simple Distributed File System
+# MP4-hangy6-tian23 IDunno, a Distributed Learning Cluster
 
 ## Description
-Simple Distributed File System (SDFS) is an HDFS-like flat file system, which is easy to scale as the number of services increases. It also supports failure tolerance, fast replication, version control, and consistency levels features. 
-
+We use our MP3 Simple Distributed File System (SDFS) as our file system to operate on. With our SDFS, we simulate a machine learning application of utilizing multiple worker node resources to accelerate the training and inference of machine learning models on large amount of data.
 
 ## Installation
 
 You can clone this project to the machines you need to grep log from using following command:
 
 ```
-ssh: git clone git@gitlab.engr.illinois.edu:hangy6/mp3-hangy6-tian23.git
+ssh: git clone git@gitlab.engr.illinois.edu:hangy6/mp4-hangy6-tian23.git
 ```
 ```
-https: git clone https://gitlab.engr.illinois.edu/hangy6/mp3-hangy6-tian23.git
+https: git clone https://gitlab.engr.illinois.edu/hangy6/mp4-hangy6-tian23.git
 ``` 
 
 ## Setup
-To use this SDFS, you need to setup required enviroment first. To make this easy, we provide a requirements.txt, please use the following command in simpleDFS/ 
+To use the SDFS, you need to setup required enviroment first. To make this easy, we provide a requirements.txt, please use the following command in simpleDFS/ 
 
 ```
 pip3 install -r requirements.txt
