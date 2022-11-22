@@ -27,7 +27,8 @@ class LocalScheduler:
             None
 
         """
-        self.slaves = [Worker() for _ in range(worker_num)]
+        self.worker_ports = [5550 + i for i in range(worker_num)]
+        self.slaves = [Worker(self.worker_ports[i]) for i in range(worker_num)]
         self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind("tcp://0.0.0.0:{}".format(LOCAL_SCHEDULER_PORT))
         self.rpc_client = zerorpc.Client()
@@ -59,7 +60,7 @@ class LocalScheduler:
         for slave in self.slaves:
             pool.apply_async(slave.run, ())
         logging.info("{} worker processes started.".format(len(self.slaves)))
-        
+
         logging.info("Local scheduler rpc service started.")
         self.rpc_server.run()
         

@@ -4,7 +4,6 @@ import random
 import logging
 
 
-WORKER_PORT = 5555
 LOCAL_SCHEDULER_PORT = 6666
 
 
@@ -16,18 +15,18 @@ logging.basicConfig(level=logging.INFO,
 
 
 class Worker:
-    def __init__(self) -> None:
+    def __init__(self, worker_port) -> None:
         """Initial a Worker object.
 
         Args:
-            None
+            worker_port (int): The port num of worker.
         
         Returns:
             None
 
         """
         self.rpc_server = zerorpc.Server(self)
-        self.rpc_server.bind("tcp://0.0.0.0:{}".format(WORKER_PORT))
+        self.rpc_server.bind("tcp://0.0.0.0:{}".format(worker_port))
         self.rpc_client = zerorpc.Client()
 
     
