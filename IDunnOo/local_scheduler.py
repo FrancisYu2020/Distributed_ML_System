@@ -56,13 +56,14 @@ class LocalScheduler:
 
         """
         logging.info("Local scheduler starting...")
-        pool = Pool(processes = MAX_SLAVE_NUM)
+        pool = Pool(processes = MAX_SLAVE_NUM + 1)
         for slave in self.slaves:
             pool.apply_async(slave.run, ())
-        logging.info("{} worker processes started.".format(len(self.slaves)))
+        pool.apply_async(self.rpc_server.run, ())
 
+        logging.info("{} worker processes started.".format(len(self.slaves)))
         logging.info("Local scheduler rpc service started.")
-        self.rpc_server.run()
+        # self.rpc_server.run()
         
         pool.close()
         pool.join()
