@@ -1,18 +1,17 @@
 from worker import Worker
 import zerorpc
-from multiprocessing import Pool
+from multiprocessing import Pool, Process
 import logging
 
 
 LOCAL_SCHEDULER_PORT = 6666
-MAX_SLAVE_NUM = 4
 SLAVE_NUM = 2
 
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
                     datefmt='%Y-%m-%d,%H:%M:%S',
-                    filename='local_scheduler.log',
+                    filename='IDunno_logs.log',
                     filemode='w')
 
 
@@ -45,6 +44,9 @@ class LocalScheduler:
     def run_worker(self) -> None:
         pass
 
+    def err_call_back(self, err):
+        print("Wrong" + str(err))
+
     def run(self) -> None:
         """Run the local scheduler process.
 
@@ -56,17 +58,16 @@ class LocalScheduler:
 
         """
         logging.info("Local scheduler starting...")
-        pool = Pool(processes = MAX_SLAVE_NUM + 1)
-        for slave in self.slaves:
-            pool.apply_async(slave.run, ())
-        pool.apply_async(self.rpc_server.run, ())
+        pool = [Process(target=slave.run) for slave in self.slaves]
+        pool.append(Process(target=self.rpc_server.run))
 
-        logging.info("{} worker processes started.".format(len(self.slaves)))
+        logging.info("{} worker processes starting...".format(len(self.slaves)))
+        for p in pool:
+            p.start()
         logging.info("Local scheduler rpc service started.")
-        # self.rpc_server.run()
         
-        pool.close()
-        pool.join()
+        for p in pool:
+            p.join()
         logging.info("Close local scheduler.")
 
 

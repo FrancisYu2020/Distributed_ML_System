@@ -7,13 +7,6 @@ import logging
 LOCAL_SCHEDULER_PORT = 6666
 
 
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
-                    datefmt='%Y-%m-%d,%H:%M:%S',
-                    filename='worker.log',
-                    filemode='w')
-
-
 class Worker:
     def __init__(self, worker_port) -> None:
         """Initial a Worker object.
