@@ -72,7 +72,7 @@ class Worker:
                 self.rpc_client.connect("tcp://127.0.0.1:{}".format(LOCAL_SCHEDULER_PORT))
                 dataset = self.rpc_client.load_data(train_data)
                 break
-            except:
+            except Exception as e:
                 logging.error("Train: Problem happens when load data: ".format(str(e)))
                 self.__sleep()
 
@@ -84,7 +84,7 @@ class Worker:
                 self.rpc_client.connect("tcp://127.0.0.1:{}".format(LOCAL_SCHEDULER_PORT))
                 self.rpc_client.save(res)
                 break
-            except:
+            except Exception as e:
                 logging.error("Train: Problem happens when save model: ".format(str(e)))
                 self.__sleep()
         
@@ -108,7 +108,7 @@ class Worker:
                 self.rpc_client.connect("tcp://127.0.0.1:{}".format(LOCAL_SCHEDULER_PORT))
                 model = self.rpc_client.load_model(model_name)
                 break
-            except:
+            except Exception as e:
                 logging.error("Predict: Problem happens when load model: ".format(str(e)))
                 self.__sleep()
             
@@ -118,7 +118,7 @@ class Worker:
                 self.rpc_client.connect("tcp://127.0.0.1:{}".format(LOCAL_SCHEDULER_PORT))
                 dataset = self.rpc_client.load_data(data)
                 break
-            except:
+            except Exception as e:
                 logging.error("Predict: Problem happens when load data: ".format(str(e)))
                 self.__sleep()
 
@@ -130,7 +130,7 @@ class Worker:
                 self.rpc_client.connect("tcp://127.0.0.1:{}".format(LOCAL_SCHEDULER_PORT))
                 self.rpc_client.save(res)
                 break
-            except:
+            except Exception as e:
                 logging.error("Predict: Problem happens when utilize model to predict: ".format(str(e)))
                 self.__sleep()
         
