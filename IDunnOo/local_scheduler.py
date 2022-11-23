@@ -22,7 +22,7 @@ class LocalScheduler:
 
         Args:
             woreker_num (int): The number of worker processes run in local.
-        
+
         Returns:
             None
 
@@ -32,25 +32,21 @@ class LocalScheduler:
         self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind("tcp://0.0.0.0:{}".format(LOCAL_SCHEDULER_PORT))
 
-
     def assign_task(self) -> None:
         pass
 
-    
     def spill_task(self) -> None:
         pass
 
-    
     def run_worker(self) -> None:
         pass
-    
 
     def run(self) -> None:
         """Run the local scheduler process.
 
         Args:
             None
-            
+
         Returns:
             None
 
@@ -59,16 +55,18 @@ class LocalScheduler:
         pool = [Process(target=slave.run) for slave in self.slaves]
         pool.append(Process(target=self.rpc_server.run))
 
-        logging.info("{} worker processes starting...".format(len(self.slaves)))
+        logging.info(
+            "{} worker processes starting...".format(len(self.slaves)))
         for p in pool:
             p.start()
         logging.info("Local scheduler rpc service started.")
-        
+
         for p in pool:
             p.join()
         logging.info("Close local scheduler.")
 
 
 if __name__ == '__main__':
-    ls = LocalScheduler(DEFAULT_SLAVE_NUM) if len(sys.argv) < 2 else LocalScheduler(int(sys.argv[1]))
+    ls = LocalScheduler(DEFAULT_SLAVE_NUM) if len(
+        sys.argv) < 2 else LocalScheduler(int(sys.argv[1]))
     ls.run()

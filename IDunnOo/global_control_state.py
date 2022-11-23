@@ -23,7 +23,7 @@ class ObjectTable:
     Attributes:
         None
     """
-    
+
     def __init__(self) -> None:
         pass
 
@@ -34,7 +34,7 @@ class TaskTable:
     Attributes:
         None
     """
-    
+
     def __init__(self) -> None:
         pass
 
@@ -60,14 +60,13 @@ class GlobalControlState:
         """
         self.obj_table = ObjectTable()
         self.task_table = TaskTable()
-    
 
-    def put(self, obj) -> str:
+    def put_obj(self, obj) -> str:
         """Initial a Worker object.
 
         Args:
             obj (object): The object which need to store.
-        
+
         Returns:
             str: The id of put Object.
         """
@@ -75,13 +74,13 @@ class GlobalControlState:
         objId = uuid.uuid1().hex
 
         # get addresses of replicas
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         dst_addr = (NAME_NODE_HOST, NAME_NODE_PORT)
         data = "put {}".format(objId)
         s.sendto(data.encode("utf-8"), dst_addr)
         replicas, _ = s.recvfrom(4096)
         replicas = replicas.decode("utf-8").split(" ")
-        
+
         bytes_obj = pickle.dumps(obj)
         # call rpc to send object
         c = zerorpc.Client(timeout=None)
@@ -96,20 +95,20 @@ class GlobalControlState:
         except Exception as e:
             logging.error("Put object timedout.")
         s.close()
-        
+
         if finish.decode("utf-8") == "finish":
-            logging.info("Put object success, generated id is: {}.".format(objId))
+            logging.info(
+                "Put object success, generated id is: {}.".format(objId))
         else:
             logging.error("Put object failed.")
         return objId
 
-
-    def get(self, objId) -> object:
+    def get_obj(self, objId) -> object:
         """Initial a Worker object.
 
         Args:
             objId (objId): The id of target object.
-        
+
         Returns:
             object: Target object.
         """
