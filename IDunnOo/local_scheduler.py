@@ -2,10 +2,11 @@ from worker import Worker
 import zerorpc
 from multiprocessing import Pool, Process
 import logging
+import sys
 
 
 LOCAL_SCHEDULER_PORT = 6666
-SLAVE_NUM = 2
+DEFAULT_SLAVE_NUM = 2
 
 
 logging.basicConfig(level=logging.INFO,
@@ -43,9 +44,7 @@ class LocalScheduler:
     
     def run_worker(self) -> None:
         pass
-
-    def err_call_back(self, err):
-        print("Wrong" + str(err))
+    
 
     def run(self) -> None:
         """Run the local scheduler process.
@@ -72,5 +71,5 @@ class LocalScheduler:
 
 
 if __name__ == '__main__':
-    ls = LocalScheduler(SLAVE_NUM)
+    ls = LocalScheduler(DEFAULT_SLAVE_NUM) if len(sys.argv) < 2 else LocalScheduler(int(sys.argv[1]))
     ls.run()
