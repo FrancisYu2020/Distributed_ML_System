@@ -18,8 +18,9 @@ class Worker:
             None
 
         """
+        self.port = worker_port
         self.rpc_server = zerorpc.Server(self)
-        self.rpc_server.bind("tcp://0.0.0.0:{}".format(worker_port))
+        self.rpc_server.bind("tcp://0.0.0.0:{}".format(self.port))
         self.rpc_client = zerorpc.Client()
 
     

@@ -1,6 +1,6 @@
 from worker import Worker
 import zerorpc
-from multiprocessing import Pool, Process
+from multiprocessing import Process
 import logging
 import sys
 

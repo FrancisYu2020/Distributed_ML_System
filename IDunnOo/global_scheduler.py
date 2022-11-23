@@ -6,7 +6,9 @@ class GlobalScheduler:
         self.task_table = TaskTable()
         self.event_logs = Eventlogs()
         self.function_table = FunctionTable()
+
     
+
 
     
 
