@@ -7,10 +7,11 @@ import socket
 import time
 import logging
 
+
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
                     datefmt='%Y-%m-%d,%H:%M:%S',
-                    filename='log',
+                    filename='sdfs_logs.log',
                     filemode='w')
 
 
@@ -19,7 +20,6 @@ NAME_NODE_PORT = 6241
 ACK_PORTS = [6000 + i for i in range(11)]
 
 work_queue = Queue(1000)
-
 
 
 class File:
