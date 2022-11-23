@@ -31,7 +31,6 @@ class LocalScheduler:
         self.slaves = [Worker(self.worker_ports[i]) for i in range(worker_num)]
         self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind("tcp://0.0.0.0:{}".format(LOCAL_SCHEDULER_PORT))
-        self.rpc_client = zerorpc.Client()
 
 
     def assign_task(self) -> None:
