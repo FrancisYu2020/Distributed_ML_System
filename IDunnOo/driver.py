@@ -67,8 +67,9 @@ class Driver:
         """
         res_obj = None
         while not res_obj:
+            print("Still working, please wait...")
             res_obj = GHC.get_obj(res_id)
-            time.sleep(0.5)
+            time.sleep(2)
         return res_obj
 
 
