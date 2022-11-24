@@ -6,6 +6,17 @@ import logging
 from glob_var import *
 
 
+class TaskTable:
+    def __init__(self) -> None:
+        self.tab = {}   # taskId -> worker
+
+    def add_task(self, t_id: str, worker: str) -> None:
+        self.tab[t_id] = worker
+    
+    def del_task(self, t_id) -> None:
+        del self.tab[t_id]
+
+
 class GlobalControlState:
     """Global Control State (GCS) is used to try to make every component as stateless as possible.
 
@@ -53,7 +64,7 @@ class GlobalControlState:
 
         if finish.decode("utf-8") == "finish":
             logging.info(
-                "Put object success, generated id is: {}.".format(objId))
+                "Put object success, the id of object is: {}.".format(objId))
         else:
             logging.error("Put object failed.")
         return objId
@@ -92,7 +103,7 @@ class GlobalControlState:
                 logging.info("Get object {} succeeded.".format(objId))
                 return obj
             except Exception as e:
-                print(e)
                 continue
         logging.error("Get object {} failed.".format(objId))
         return None
+        

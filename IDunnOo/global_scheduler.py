@@ -1,6 +1,9 @@
 import logging
 import zerorpc
 from glob_var import *
+from global_control_store import GlobalControlState as GCS
+from global_control_store import TaskTable
+
 
 
 logging.basicConfig(level=logging.INFO,
@@ -33,7 +36,7 @@ class GlobalScheduler:
             "tcp://0.0.0.0:{}".format(GLOBAL_SCHEDULER_PORT))
     
     def heartbeat(self) -> None:
-        """Heartbeat func to detect survive.
+        """Heartbeat func to detect survive, basically do nothing.
 
         Args:
             None
@@ -54,6 +57,13 @@ class GlobalScheduler:
             str: Selected worker host.
         """
         # TODO finish select part
+        # fetch task table
+        task_t = GCS.get(TASK_TABLE_NAME)
+        if not task_t:
+            task_t = TaskTable()
+        # TODO complete modify task_t
+        # modify task_t...
+        GCS.put(task_t)
         worker = "fa22-cs425-2205.cs.illinois.edu"
         return worker
 

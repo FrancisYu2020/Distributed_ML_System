@@ -1,6 +1,6 @@
 import zerorpc
 import time
-from global_control_store import GlobalControlState as GHC
+from global_control_store import GlobalControlState as GCS
 from glob_var import *
 from DNNs import *
 
@@ -43,11 +43,11 @@ class Driver:
             str: The id of result object.
         """
         # get func id
-        func_id = GHC.put(func)
+        func_id = GCS.put(func)
         # get param_ids
         param_ids = []
         for d in data:
-            param_ids.append(GHC.put(d))
+            param_ids.append(GCS.put(d))
 
         # heartbeat to check if main GS survive
         host = GLOBAL_SCHEDULER_HOST
@@ -76,7 +76,7 @@ class Driver:
         res = None
         while not res:
             print("Still working, please wait...")
-            res = GHC.get(res_id)
+            res = GCS.get(res_id)
             time.sleep(2)
         return res
 
