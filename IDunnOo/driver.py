@@ -1,6 +1,5 @@
 import zerorpc
 import time
-import pickle
 from global_control_store import GlobalControlState as GHC
 from glob_var import *
 from DNNs import *
@@ -49,8 +48,17 @@ class Driver:
         param_ids = []
         for d in data:
             param_ids.append(GHC.put(d))
+
+        # heartbeat to check if main GS survive
+        host = GLOBAL_SCHEDULER_HOST
+        try:    # main GS survive
+            with zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2) as heartbeat_c:
+                heartbeat_c.heartbeat()
+        except:  # use hot standby GS
+            host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
+
         c = zerorpc.Client(
-            "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT))
+            "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
         res_id = c.sub_task(func_id, param_ids)
         print("Get res_id: {}".format(res_id))
         return res_id

@@ -31,6 +31,16 @@ class GlobalScheduler:
         self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind(
             "tcp://0.0.0.0:{}".format(GLOBAL_SCHEDULER_PORT))
+    
+    def heartbeat(self) -> None:
+        """Heartbeat func to detect survive.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
 
     def select_worker(self) -> str:
         """Worker select strategy.

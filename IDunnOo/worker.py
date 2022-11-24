@@ -1,6 +1,5 @@
 import zerorpc
 import logging
-import pickle
 from global_control_store import GlobalControlState as GCS
 import uuid
 from threading import Thread
