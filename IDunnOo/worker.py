@@ -67,29 +67,27 @@ class Worker:
         """
         # get function
         logging.info("Start to fetch func object from GCS.")
-        bytes_func = None
-        while not bytes_func:
-            bytes_func = GCS.get_obj(func_id)
-        func = pickle.loads(bytes_func)
+        func = None
+        while not func:
+            func = GCS.get_obj(func_id)
         logging.info("Func object fetched.")
         # get parameters
         logging.info("Start to fetch params objects from GCS.")
         params = []
         for i, param_id in enumerate(param_ids):
-            bytes_param = None
-            while not bytes_param:
+            param = None
+            while not param:
                 logging.info("Start to fetch {} param object".format(i))
-                bytes_param = GCS.get_obj(param_id)
+                param = GCS.get_obj(param_id)
                 logging.info("{} param object fetched".format(i))
-                params.append(pickle.loads(bytes_param))
+                params.append(pickle.loads(param))
         logging.info("All params have been fetched.")
         # execute function
         logging.info("Exectue function.")
         res = func(params)
         # write result to GCS
         logging.info("Finish executing func. Start to store result to GCS.")
-        bytes_res = pickle.dumps(res)
-        GCS.put_obj(bytes_res, res_id)
+        GCS.put_obj(res, res_id)
         logging.info("Result stored.")
 
     def run(self) -> None:
