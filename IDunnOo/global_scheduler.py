@@ -30,7 +30,7 @@ class GlobalScheduler:
         """
         self.rpc_server = zerorpc.Server()
         self.rpc_server.bind(
-            "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT))
+            "tcp://0.0.0.0:{}".format(GLOBAL_SCHEDULER_PORT))
 
     def select_worker(self) -> str:
         """Worker select strategy.
