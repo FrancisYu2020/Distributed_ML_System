@@ -104,8 +104,8 @@ class Server:
                     target=self.receive_ack, args=[news[1]])
                 new_t.start()
                 # with TS_lock:
-                self.neighbor_timestamps[news[1]][0] = 1
-                self.neighbor_timestamps[news[1]][1] = self.timer.time()
+                # self.neighbor_timestamps[news[1]][0] = 1
+                # self.neighbor_timestamps[news[1]][1] = self.timer.time()
                 self.ML.append(news[1])
                 print("master send join messages: ", self.ML)
             else:
