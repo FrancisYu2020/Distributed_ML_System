@@ -47,7 +47,7 @@ class GlobalScheduler:
         worker = "fa22-cs425-2205.cs.illinois.edu"
         return worker
 
-    def sub_task(self, func_id: str, params_id: str) -> str:
+    def sub_task(self, func_id: str, params_id: list) -> str:
         """Recv a task from driver.
 
         Receive a task from driver and use rpc to call worker execute it.
