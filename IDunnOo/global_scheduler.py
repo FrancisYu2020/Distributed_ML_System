@@ -6,7 +6,7 @@ from glob_var import *
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
                     datefmt='%Y-%m-%d,%H:%M:%S',
-                    filename='IDunno_logs.log',
+                    filename='IDunno_driver_logs.log',
                     filemode='w')
 
 
@@ -44,8 +44,10 @@ class GlobalScheduler:
             str: Selected worker host.
         """
         # TODO finish select part
+        worker = ""
+        return worker
 
-    def sub_task(self, func_id, params_id) -> str:
+    def sub_task(self, func_id: str, params_id: str) -> str:
         """Recv a task from driver.
 
         Receive a task from driver and use rpc to call worker execute it.
@@ -57,8 +59,10 @@ class GlobalScheduler:
         Returns:
             str: The result id of task.
         """
+        logging.info("Recv task from driver.")
         worker = self.select_worker()
         c = zerorpc.Client("tcp://{}:{}".format(worker, WORKER_PORT))
+        logging.info("Assigned task to {}.".format(worker))
         res_id = c.recv_task(func_id, params_id)
         return res_id
 
@@ -71,6 +75,7 @@ class GlobalScheduler:
         Returns:
             None
         """
+        logging.info("Global Scheduler started.")
         self.rpc_server.run()
 
 

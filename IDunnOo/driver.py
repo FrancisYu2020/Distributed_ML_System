@@ -1,14 +1,6 @@
 import zerorpc
 from global_control_store import GlobalControlState as GHC
 from glob_var import *
-import logging
-
-
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
-                    datefmt='%Y-%m-%d,%H:%M:%S',
-                    filename='IDunno_driver_logs.log',
-                    filemode='w')
 
 
 class Driver:
@@ -34,7 +26,7 @@ class Driver:
         while True:
             cmd = input(">")
 
-    def sub_task(func, data) -> str:
+    def sub_task(func: object, data: list) -> str:
         """Sub a task to GS.
 
         Args:
@@ -55,7 +47,7 @@ class Driver:
         res_id = c.sub_task(func_id, param_ids)
         return res_id
 
-    def get_task_res(res_id) -> object:
+    def get_task_res(res_id: str) -> object:
         """Get a task to GS.
 
         Args:

@@ -6,13 +6,6 @@ import logging
 from glob_var import *
 
 
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
-                    datefmt='%Y-%m-%d,%H:%M:%S',
-                    filename='GCS.log',
-                    filemode='w')
-
-
 class GlobalControlState:
     """Global Control State (GCS) is used to try to make every component as stateless as possible.
 
@@ -22,7 +15,7 @@ class GlobalControlState:
         None
     """
 
-    def put_obj(obj, id=None) -> str:
+    def put_obj(obj: object, id: str = None) -> str:
         """Put an object to SDFS.
 
         Args:
@@ -65,7 +58,7 @@ class GlobalControlState:
             logging.error("Put object failed.")
         return objId
 
-    def get_obj(objId) -> object:
+    def get_obj(objId: str) -> object:
         """"Get an object from SDFS.
 
         Args:
