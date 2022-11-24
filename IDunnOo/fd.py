@@ -72,7 +72,7 @@ class Server:
 
     def listen_to_master(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((self.hostname, FOLLOWER_PORT))
+        s.bind(('', FOLLOWER_PORT))
         s.listen(5)
         while 1:
             conn, addr = s.accept()
