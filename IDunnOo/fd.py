@@ -77,6 +77,7 @@ class Server:
         while 1:
             conn, addr = s.accept()
             info = conn.recv(4096).decode()
+            print("recv info {}".format(info))
             if info == "you are dead":
                 self.ML = []
             else:
