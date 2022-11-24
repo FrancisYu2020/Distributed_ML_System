@@ -9,4 +9,4 @@ WORKER_PORT = 12345
 TASK_TABLE_NAME = "task_t"
 MASTER_PORT = 2333
 FOLLOWER_PORT = 2334
-PING_PORT = [2345 + i for i in range(10)]
+PING_PORT = [2345 + i for i in range(11)]
