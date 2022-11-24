@@ -1,6 +1,9 @@
 import zerorpc
+import time
+import pickle
 from global_control_store import GlobalControlState as GHC
 from glob_var import *
+from DNNs import *
 
 
 class Driver:
@@ -10,7 +13,7 @@ class Driver:
         None
     """
 
-    def shell() -> None:
+    def shell(self) -> None:
         """The console shell, accept input and handle it.
 
         Args:
@@ -25,6 +28,11 @@ class Driver:
         print(hint)
         while True:
             cmd = input(">")
+            print("Receive command: {}".format(cmd))
+            res_id = self.sub_task(MockDNN.hello_world("Guts"))
+            res_obj = self.get_task_res(res_id)
+            res = pickle.loads(res_obj)
+            print(res)
 
     def sub_task(func: object, data: list) -> str:
         """Sub a task to GS.
@@ -57,9 +65,12 @@ class Driver:
         Returns:
             object: The result object.
         """
-        res_obj = GHC.get_obj(res_id)
+        res_obj = None
+        while not res_obj:
+            res_obj = GHC.get_obj(res_id)
+            time.sleep(0.5)
         return res_obj
 
 
 if __name__ == "__main__":
-    Driver.shell()
+    Driver().shell()

@@ -44,7 +44,7 @@ class GlobalScheduler:
             str: Selected worker host.
         """
         # TODO finish select part
-        worker = ""
+        worker = "fa22-cs425-2205.cs.illinois.edu"
         return worker
 
     def sub_task(self, func_id: str, params_id: str) -> str:

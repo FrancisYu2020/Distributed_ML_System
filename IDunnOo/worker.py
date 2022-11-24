@@ -5,6 +5,7 @@ from global_control_store import GlobalControlState as GCS
 import uuid
 from threading import Thread
 from glob_var import *
+from DNNs import *
 
 
 logging.basicConfig(level=logging.INFO,
