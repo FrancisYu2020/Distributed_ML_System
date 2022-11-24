@@ -80,7 +80,7 @@ class Worker:
                 logging.info("Start to fetch {} param object".format(i))
                 param = GCS.get_obj(param_id)
                 logging.info("{} param object fetched".format(i))
-                params.append(pickle.loads(param))
+                params.append(param)
         logging.info("All params have been fetched.")
         # execute function
         logging.info("Exectue function.")
