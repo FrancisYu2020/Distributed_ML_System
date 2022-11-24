@@ -56,12 +56,12 @@ class GlobalScheduler:
         Returns:
             str: Selected worker host.
         """
-        # TODO finish select part
+        # TODO: finish select part
         # fetch task table
         task_t = GCS.get(TASK_TABLE_NAME)
         if not task_t:
             task_t = TaskTable()
-        # TODO complete modify task_t
+        # TODO: complete modify task_t
         # modify task_t...
         GCS.put(task_t)
         worker = "fa22-cs425-2205.cs.illinois.edu"

@@ -16,7 +16,7 @@ class Server:
         print("I am VM ", self.hostID)
         self.master_host = master_host
         # self.is_master = True if self.hostname == master_host else False
-        self.is_master = False
+        self.is_master = True
         if self.is_master:
             print("I am the master node -^.^- ")
         else:
@@ -70,19 +70,60 @@ class Server:
         s.send(json.dumps(["leave", host]).encode())
         s.close()
 
-    def listen_to_master(self):
+    def listen_join_and_leave(self):
+        # TODO: run a thread to know who are joining and leaving
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((self.hostname, MASTER_PORT))
         s.listen(5)
         while 1:
             conn, addr = s.accept()
-            info = conn.recv(4096).decode()
-            if info == "you are dead":
-                self.ML = []
+            # leave or join message heard from common nodes ["join"/"leave", node hostname]
+            news = json.loads(conn.recv(4096).decode())
+
+            if news[0] == "leave":
+                idx = -1
+                for i in range(len(self.ML)):
+                    if self.ML[i] == news[1]:
+                        idx = i
+                        break
+                if idx == -1:
+                    print(f"node {news[1]} already left")
+                    # This should indicate that multiple nodes detected the leave/fail and reported to the master, we do nothing
+                    # raise NotImplementedError("TODO: fix bug in listen_join_and_leave that inactive host is not in the membership list")
+                    continue
+                # directly remove the node from self.ML
+                self.ML = self.ML[:idx] + self.ML[idx+1:]
+                threading.Thread()
+                # with TS_lock:
+                #     self.neighbor_timestamps[news[1]][0] = 0
+            elif news[0] == "join":
+                if news[1] in self.ML:
+                    print("Node already exists in the ring!")
+                    continue
+                # only a node join, mark its existance and timestamp and add to self.ML
+                # print(news[1])
+                new_t = threading.Thread(
+                    target=self.receive_ack, args=[news[1]])
+                new_t.start()
+                # with TS_lock:
+                # self.neighbor_timestamps[news[1]][0] = 1
+                # self.neighbor_timestamps[news[1]][1] = self.timer.time()
+                self.ML.append(news[1])
+                # print("master send join messages: ", self.ML)
             else:
-                # simply update whatever heard from the master
-                self.ML = json.loads(info)
-    
+                raise NotImplementedError(
+                    "TODO: fix bug in listen_join_and_leave, the received news has unrecognizable message header")
+            # TODO: ask everyone to update their membership list
+            for host in self.ML:
+                if self.is_master:
+                    continue
+                # broadcast the updated ML to every node marked in the ring
+                s1 = socket.socket()
+                s1.connect((host, MASTER_PORT))
+                s1.send(json.dumps(self.ML).encode())
+                s1.close()
+                # print("successfully send ML: ", self.ML)
+
     def ping(self):
         if self.is_master:
             return
@@ -119,10 +160,7 @@ class Server:
                 return
 
     def run(self):
-        tn = threading.Thread(target=self.listen_to_master,
-                              name="listen_to_master")
-        t1 = threading.Thread(target=self.shell, name="shell")
-
-        tn.start()
-        tn.join()
-        t1.join()
+        tm = threading.Thread(
+            target=self.listen_join_and_leave, name="listen_join_and_leave")
+        tm.start()
+        tm.join()
