@@ -64,6 +64,13 @@ class Server:
         s.connect((self.master_host, MASTER_PORT))
         s.send(json.dumps(["leave", host]).encode())
         s.close()
+    
+    def fail(self, host=None):
+        # node leave, do nothing but send a leave request ["leave", host] to master
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((self.master_host, MASTER_PORT))
+        s.send(json.dumps(["leave", host]).encode())
+        s.close()
 
     def listen_join_and_leave(self):
         # TODO: run a thread to know who are joining and leaving
