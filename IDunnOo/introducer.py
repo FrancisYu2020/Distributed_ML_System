@@ -164,3 +164,6 @@ class Server:
             target=self.listen_join_and_leave, name="listen_join_and_leave")
         tm.start()
         tm.join()
+
+s = Server()
+s.run()

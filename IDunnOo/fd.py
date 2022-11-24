@@ -126,3 +126,6 @@ class Server:
         tn.start()
         tn.join()
         t1.join()
+
+s = Server()
+s.run()
