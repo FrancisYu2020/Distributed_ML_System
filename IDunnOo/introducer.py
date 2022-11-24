@@ -120,7 +120,7 @@ class Server:
                 s1.connect((host, FOLLOWER_PORT))
                 s1.send(json.dumps(self.ML).encode())
                 s1.close()
-                # print("successfully send ML: ", self.ML)
+                print("successfully send ML: ", self.ML)
 
     def ping(self):
         if self.is_master:
