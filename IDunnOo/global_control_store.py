@@ -81,6 +81,7 @@ class GlobalControlState:
             return None
         replicas = replicas.split(" ")
 
+        logging.info("Target object in {}.".format(replicas))
         for replica in replicas:
             try:
                 c = zerorpc.Client(timeout=None)
