@@ -113,8 +113,6 @@ class Server:
                     "TODO: fix bug in listen_join_and_leave, the received news has unrecognizable message header")
             # TODO: ask everyone to update their membership list
             for host in self.ML:
-                if self.is_master:
-                    continue
                 # broadcast the updated ML to every node marked in the ring
                 s1 = socket.socket()
                 s1.connect((host, FOLLOWER_PORT))
