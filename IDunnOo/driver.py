@@ -53,6 +53,7 @@ class Driver:
         c = zerorpc.Client(
             "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT))
         res_id = c.sub_task(func_id, param_ids)
+        print("Get res_id: {}".format(res_id))
         return res_id
 
     def get_task_res(res_id: str) -> object:
