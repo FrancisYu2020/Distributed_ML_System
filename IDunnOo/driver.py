@@ -29,12 +29,12 @@ class Driver:
         while True:
             cmd = input(">")
             print("Receive command: {}".format(cmd))
-            res_id = self.sub_task(MockDNN.hello_world, ("Guts"))
+            res_id = self.sub_task(MockDNN.hello_world, ["Guts"])
             res_obj = self.get_task_res(res_id)
             res = pickle.loads(res_obj)
             print(res)
 
-    def sub_task(func: object, data: list) -> str:
+    def sub_task(self, func: object, data: list) -> str:
         """Sub a task to GS.
 
         Args:
@@ -56,7 +56,7 @@ class Driver:
         print("Get res_id: {}".format(res_id))
         return res_id
 
-    def get_task_res(res_id: str) -> object:
+    def get_task_res(self, res_id: str) -> object:
         """Get a task to GS.
 
         Args:
