@@ -98,7 +98,7 @@ class Server:
                 print("Host " + str(monitorID) + " Fail")
                 try:
                     s1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    s1.connect((monitor_host, MASTER_PORT))
+                    s1.connect((monitor_host, FOLLOWER_PORT))
                     s1.send("you are dead".encode())
                     s1.close()
                 except:
