@@ -69,7 +69,7 @@ class Worker:
         logging.info("Start to fetch func object from GCS.")
         func = None
         while not func:
-            func = GCS.get_obj(func_id)
+            func = GCS.get(func_id)
         logging.info("Func object fetched.")
         # get parameters
         logging.info("Start to fetch params objects from GCS.")
@@ -78,7 +78,7 @@ class Worker:
             param = None
             while not param:
                 logging.info("Start to fetch {} param object".format(i))
-                param = GCS.get_obj(param_id)
+                param = GCS.get(param_id)
                 logging.info("{} param object fetched".format(i))
                 params.append(param)
         logging.info("All params have been fetched.")
@@ -87,7 +87,7 @@ class Worker:
         res = func(params)
         # write result to GCS
         logging.info("Finish executing func. Start to store result to GCS.")
-        GCS.put_obj(res, res_id)
+        GCS.put(res, res_id)
         logging.info("Result stored.")
 
     def run(self) -> None:

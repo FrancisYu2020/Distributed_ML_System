@@ -44,11 +44,11 @@ class Driver:
             str: The id of result object.
         """
         # get func id
-        func_id = GHC.put_obj(func)
+        func_id = GHC.put(func)
         # get param_ids
         param_ids = []
         for d in data:
-            param_ids.append(GHC.put_obj(d))
+            param_ids.append(GHC.put(d))
         c = zerorpc.Client(
             "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT))
         res_id = c.sub_task(func_id, param_ids)
@@ -68,7 +68,7 @@ class Driver:
         res = None
         while not res:
             print("Still working, please wait...")
-            res = GHC.get_obj(res_id)
+            res = GHC.get(res_id)
             time.sleep(2)
         return res
 

@@ -2,5 +2,9 @@ class MockDNN():
     def __init__(self) -> None:
         pass
 
-    def hello_world(name) -> str:
-        return "Welcome to IDunno, {}.".format(name)
+    def hello_world(names) -> str:
+        ret = "Welcome to IDunno, "
+        for name in names:
+            ret += name
+        ret += "."
+        return ret

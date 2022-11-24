@@ -15,7 +15,7 @@ class GlobalControlState:
         None
     """
 
-    def put_obj(obj: object, id: str = None) -> str:
+    def put(obj: object, id: str = None) -> str:
         """Put an object to SDFS.
 
         Args:
@@ -58,7 +58,7 @@ class GlobalControlState:
             logging.error("Put object failed.")
         return objId
 
-    def get_obj(objId: str) -> object:
+    def get(objId: str) -> object:
         """"Get an object from SDFS.
 
         Args:
