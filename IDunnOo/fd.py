@@ -72,7 +72,7 @@ class Server:
 
     def listen_to_master(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((self.hostname, MASTER_PORT))
+        s.bind((self.hostname, FOLLOWER_PORT))
         s.listen(5)
         while 1:
             conn, addr = s.accept()
@@ -94,29 +94,6 @@ class Server:
         conn, _ = s.accept()
         while True:
             conn.recv(100)
-
-    def receive_ack(self, monitor_host):
-        if not self.is_master:
-            return
-        monitorID = int(monitor_host[13:15])
-        s = socket.socket()
-        s.connect((monitor_host, PING_PORT[monitorID]))
-        while True:
-            try:
-                s.send("hi".encode("utf-8"))
-            except Exception as e:
-                # print("Error: " + str(e))
-                print("Host " + str(monitorID) + " Fail")
-                try:
-                    s1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    s1.connect((monitor_host, MASTER_PORT))
-                    s1.send("you are dead".encode())
-                    s1.close()
-                except:
-                    pass
-                self.leave(monitor_host)
-                s.close()
-                return
 
     def shell(self):
         while 1:

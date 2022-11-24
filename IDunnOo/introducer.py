@@ -22,7 +22,6 @@ class Server:
         else:
             print("I am a pariah node :(")
         self.ML = []
-        self.timer = time
         # self.neighbor_timestamps = {} # dict of key = hostname, value = [isInRing, timestamp], only used in master node to record a node status
 
     def get_neighbors(self):
@@ -93,7 +92,6 @@ class Server:
                     continue
                 # directly remove the node from self.ML
                 self.ML = self.ML[:idx] + self.ML[idx+1:]
-                threading.Thread()
                 # with TS_lock:
                 #     self.neighbor_timestamps[news[1]][0] = 0
             elif news[0] == "join":
@@ -119,7 +117,7 @@ class Server:
                     continue
                 # broadcast the updated ML to every node marked in the ring
                 s1 = socket.socket()
-                s1.connect((host, MASTER_PORT))
+                s1.connect((host, FOLLOWER_PORT))
                 s1.send(json.dumps(self.ML).encode())
                 s1.close()
                 # print("successfully send ML: ", self.ML)
