@@ -2,7 +2,6 @@
 
 import socket
 import json
-import time
 import threading
 from glob_var import *
 
@@ -71,18 +70,6 @@ class Server:
             # TODO: ask everyone to update their membership list
             with ML_lock:
                 self.update()
-
-    def ping(self):
-        if self.is_master:
-            return
-        # send ping to check neighbors alive every 300 ms
-
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((self.hostname, PING_PORT[self.hostID]))
-        s.listen(5)
-        conn, _ = s.accept()
-        while True:
-            conn.recv(100)
 
     def receive_ack(self, monitor_host):
         if not self.is_master:

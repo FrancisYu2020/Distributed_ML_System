@@ -6,6 +6,7 @@ import time
 import threading
 from glob_var import *
 
+
 ML_lock = threading.Lock()
 
 
@@ -44,7 +45,7 @@ class Server:
 
     def join(self):
         # a common node join, do nothing but send a join request ["join", current node hostname] to master
-        t = threading.Thread(target=self.ping, name="heartbeat")
+        t = threading.Thread(target=self.heartbeat, name="heartbeat")
         t.start()
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((self.master_host, MASTER_PORT))
@@ -84,11 +85,7 @@ class Server:
                 # simply update whatever heard from the master
                 self.ML = json.loads(info)
     
-    def ping(self):
-        if self.is_master:
-            return
-        # send ping to check neighbors alive every 300 ms
-
+    def heartbeat(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((self.hostname, PING_PORT[self.hostID]))
         s.listen(5)
@@ -97,16 +94,16 @@ class Server:
             conn.recv(100)
 
     def shell(self):
+        print("=======================================================")
+        print("1. list_mem: list current membership list in the ring")
+        print("2. list_self: list current node")
+        print("3. join: join current node to the ring")
+        print("4. leave: leave current node from the ring")
+        print("5. help: show this usage prompt")
+        print("6. exit: shutdown this node")
+        print("=======================================================")
+        print("Please input command:")
         while 1:
-            print("=======================================================")
-            print("1. list_mem: list current membership list in the ring")
-            print("2. list_self: list current node")
-            print("3. join: join current node to the ring")
-            print("4. leave: leave current node from the ring")
-            print("5. help: show this usage prompt")
-            print("6. exit: shutdown this node")
-            print("=======================================================")
-            print("Please input command:")
             command = input()
             if command == "list_mem":
                 with ML_lock:
