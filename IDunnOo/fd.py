@@ -118,6 +118,39 @@ class Server:
                 s.close()
                 return
 
+    def shell(self):
+        while 1:
+            print("=======================================================")
+            print("1. list_mem: list current membership list in the ring")
+            print("2. list_self: list current node")
+            print("3. join: join current node to the ring")
+            print("4. leave: leave current node from the ring")
+            print("5. help: show this usage prompt")
+            print("6. exit: shutdown this node")
+            print("=======================================================")
+            print("Please input command:")
+            command = input()
+            if command == "list_mem":
+                with ML_lock:
+                    print(self.ML)
+            elif command == "list_self":
+                print(self.hostname)
+            elif command == "join":
+                self.join()
+            elif command == "leave":
+                self.leave()
+            elif command == "help":
+                print("=======================================================")
+                print("1. list_mem: list current membership list in the ring")
+                print("2. list_self: list current node")
+                print("3. join: join current node to the ring")
+                print("4. leave: leave current node from the ring")
+                print("5. help: show this usage prompt")
+                print("6. exit: shutdown this node")
+                print("=======================================================")
+            else:
+                print("invalid command, use help to check available commands!")
+
     def run(self):
         tn = threading.Thread(target=self.listen_to_master,
                               name="listen_to_master")
