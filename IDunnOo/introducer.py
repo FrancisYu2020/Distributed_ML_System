@@ -23,54 +23,23 @@ class Server:
             print("I am a pariah node :(")
         self.ML = []
         # self.neighbor_timestamps = {} # dict of key = hostname, value = [isInRing, timestamp], only used in master node to record a node status
-
-    def get_neighbors(self):
-        # If a node is not in the ring, self.ML = [] hence directly return []
-        # if a node is in the ring, find the index of it and return its 3 or less successors
-        if not len(self.ML):
-            return []
-        i = 0
-        while i < len(self.ML) and (self.ML[i] != self.hostname):
-            i += 1
-        if i == len(self.ML) and (i != 0):
-            raise NotImplementedError(
-                "TODO: fix bug that current server is in the ring but not in the membership list!")
-        if len(self.ML) <= 4:
-            ret = self.ML[:i] + self.ML[i+1:]
-        else:
-            ret = (self.ML * 2)[i+1:i+4]
-        return ret
-
-    def join(self):
-        # a common node join, do nothing but send a join request ["join", current node hostname] to master
-        t = threading.Thread(target=self.ping, name="heartbeat")
-        t.start()
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.master_host, MASTER_PORT))
-        s.send(json.dumps(["join", self.hostname]).encode())
-        s.close()
-
-    def leave(self, host=None):
-        if host == None:
-            # self.leave() leave the node itself from the ring
-            host = self.hostname
-        # TODO: send a leave message to the master
-        # else send leave message to the master
-        if host == self.hostname:
-            # self leave, remember to clear self.ML
-            self.ML = []
-        # node leave, do nothing but send a leave request ["leave", host] to master
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.master_host, MASTER_PORT))
-        s.send(json.dumps(["leave", host]).encode())
-        s.close()
     
-    def fail(self, host=None):
+    def update(self):
+        for host in self.ML:
+            # broadcast the updated ML to every node marked in the ring
+            s1 = socket.socket()
+            s1.connect((host, FOLLOWER_PORT))
+            s1.send(json.dumps(self.ML).encode())
+            s1.close()
+            print("successfully send ML: ", self.ML)
+
+    def fail(self, host):
         # node leave, do nothing but send a leave request ["leave", host] to master
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.master_host, MASTER_PORT))
-        s.send(json.dumps(["leave", host]).encode())
-        s.close()
+        with ML_lock:
+            if host not in self.ML:
+                return
+            self.ML.remove(host)
+            self.update()
 
     def listen_join_and_leave(self):
         # TODO: run a thread to know who are joining and leaving
@@ -82,22 +51,7 @@ class Server:
             # leave or join message heard from common nodes ["join"/"leave", node hostname]
             news = json.loads(conn.recv(4096).decode())
 
-            if news[0] == "leave":
-                idx = -1
-                for i in range(len(self.ML)):
-                    if self.ML[i] == news[1]:
-                        idx = i
-                        break
-                if idx == -1:
-                    print(f"node {news[1]} already left")
-                    # This should indicate that multiple nodes detected the leave/fail and reported to the master, we do nothing
-                    # raise NotImplementedError("TODO: fix bug in listen_join_and_leave that inactive host is not in the membership list")
-                    continue
-                # directly remove the node from self.ML
-                self.ML = self.ML[:idx] + self.ML[idx+1:]
-                # with TS_lock:
-                #     self.neighbor_timestamps[news[1]][0] = 0
-            elif news[0] == "join":
+            if news[0] == "join":
                 if news[1] in self.ML:
                     print("Node already exists in the ring!")
                     continue
@@ -115,13 +69,8 @@ class Server:
                 raise NotImplementedError(
                     "TODO: fix bug in listen_join_and_leave, the received news has unrecognizable message header")
             # TODO: ask everyone to update their membership list
-            for host in self.ML:
-                # broadcast the updated ML to every node marked in the ring
-                s1 = socket.socket()
-                s1.connect((host, FOLLOWER_PORT))
-                s1.send(json.dumps(self.ML).encode())
-                s1.close()
-                print("successfully send ML: ", self.ML)
+            with ML_lock:
+                self.update()
 
     def ping(self):
         if self.is_master:
@@ -154,7 +103,7 @@ class Server:
                     s1.close()
                 except:
                     pass
-                self.leave(monitor_host)
+                self.fail(monitor_host)
                 s.close()
                 return
 
