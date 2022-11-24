@@ -85,7 +85,7 @@ class GlobalControlState:
         for replica in replicas:
             try:
                 c = zerorpc.Client(timeout=None)
-                c.connect("tcp://" + replica + ":" + DATA_NODE_PORT)
+                c.connect("tcp://{}:{}".format(replica, DATA_NODE_PORT))
                 bytes_obj, _ = c.get_file(objId)
                 c.close()
                 obj = pickle.loads(bytes_obj)
