@@ -91,7 +91,8 @@ class GlobalControlState:
                 obj = pickle.loads(bytes_obj)
                 logging.info("Get object {} succeeded.".format(objId))
                 return obj
-            except:
+            except Exception as e:
+                print(e)
                 continue
         logging.error("Get object {} failed.".format(objId))
         return None

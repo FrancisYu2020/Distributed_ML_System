@@ -67,7 +67,8 @@ class Worker:
         """
         # get function
         logging.info("Start to fetch func object from GCS.")
-        bytes_func = GCS.get_obj(func_id)
+        while not bytes_func:
+            bytes_func = GCS.get_obj(func_id)
         func = pickle.loads(bytes_func)
         logging.info("Func object fetched.")
         # get parameters
