@@ -99,15 +99,15 @@ class Server:
                     print("Node already exists in the ring!")
                     continue
                 # only a node join, mark its existance and timestamp and add to self.ML
-                # print(news[1])
+                print(news[1])
                 new_t = threading.Thread(
                     target=self.receive_ack, args=[news[1]])
                 new_t.start()
                 # with TS_lock:
-                # self.neighbor_timestamps[news[1]][0] = 1
-                # self.neighbor_timestamps[news[1]][1] = self.timer.time()
+                self.neighbor_timestamps[news[1]][0] = 1
+                self.neighbor_timestamps[news[1]][1] = self.timer.time()
                 self.ML.append(news[1])
-                # print("master send join messages: ", self.ML)
+                print("master send join messages: ", self.ML)
             else:
                 raise NotImplementedError(
                     "TODO: fix bug in listen_join_and_leave, the received news has unrecognizable message header")
