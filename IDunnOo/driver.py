@@ -30,8 +30,7 @@ class Driver:
             cmd = input(">")
             print("Receive command: {}".format(cmd))
             res_id = self.sub_task(MockDNN.hello_world, ["Guts"])
-            res_obj = self.get_task_res(res_id)
-            res = pickle.loads(res_obj)
+            res = self.get_task_res(res_id)
             print(res)
 
     def sub_task(self, func: object, data: list) -> str:
@@ -66,12 +65,12 @@ class Driver:
         Returns:
             object: The result object.
         """
-        res_obj = None
-        while not res_obj:
+        res = None
+        while not res:
             print("Still working, please wait...")
-            res_obj = GHC.get_obj(res_id)
+            res = GHC.get_obj(res_id)
             time.sleep(2)
-        return res_obj
+        return res
 
 
 if __name__ == "__main__":
