@@ -55,10 +55,6 @@ class Server:
             # self.leave() leave the node itself from the ring
             host = self.hostname
         # TODO: send a leave message to the master
-        if self.is_master:
-            # we do not allow master to leave
-            print("Cannot force master node to leave!")
-            return
         # else send leave message to the master
         if host == self.hostname:
             # self leave, remember to clear self.ML
