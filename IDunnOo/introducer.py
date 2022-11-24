@@ -3,6 +3,7 @@
 import socket
 import json
 import threading
+import zerorpc
 from glob_var import *
 
 ML_lock = threading.Lock()
@@ -38,6 +39,19 @@ class Server:
             if host not in self.ML:
                 return
             self.ML.remove(host)
+            
+            # heartbeat to check if main GS survive
+            host = GLOBAL_SCHEDULER_HOST
+            try:    # main GS survive
+                with zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2) as heartbeat_c:
+                    heartbeat_c.heartbeat()
+            except:  # use hot standby GS
+                host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
+
+            c = zerorpc.Client(
+                "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
+            c.fail_worker(host)
+
             self.update()
 
     def listen_join_and_leave(self):
@@ -51,25 +65,25 @@ class Server:
             news = json.loads(conn.recv(4096).decode())
 
             if news[0] == "join":
-                if news[1] in self.ML:
-                    print("Node already exists in the ring!")
-                    continue
-                # only a node join, mark its existance and timestamp and add to self.ML
-                print(news[1])
-                new_t = threading.Thread(
-                    target=self.receive_ack, args=[news[1]])
-                new_t.start()
-                # with TS_lock:
-                # self.neighbor_timestamps[news[1]][0] = 1
-                # self.neighbor_timestamps[news[1]][1] = self.timer.time()
-                self.ML.append(news[1])
-                print("master send join messages: ", self.ML)
+                with ML_lock:
+                    if news[1] in self.ML:
+                        print("Node already exists in the ring!")
+                        continue
+                    # only a node join, mark its existance and timestamp and add to self.ML
+                    print(news[1])
+                    new_t = threading.Thread(
+                        target=self.receive_ack, args=[news[1]])
+                    new_t.start()
+                    # with TS_lock:
+                    # self.neighbor_timestamps[news[1]][0] = 1
+                    # self.neighbor_timestamps[news[1]][1] = self.timer.time()
+                    self.ML.append(news[1])
+                    print("master send join messages: ", self.ML)
+                    self.update()
             else:
                 raise NotImplementedError(
                     "TODO: fix bug in listen_join_and_leave, the received news has unrecognizable message header")
             # TODO: ask everyone to update their membership list
-            with ML_lock:
-                self.update()
 
     def receive_ack(self, monitor_host):
         if not self.is_master:

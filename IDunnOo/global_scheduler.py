@@ -45,6 +45,17 @@ class GlobalScheduler:
             None
         """
 
+    def fail_worker(self, host: str) -> None:
+        """Worker failed, check if it has task and reassign the failed task.
+
+        Args:
+            host (str): The failed worker host name.
+
+        Returns:
+            None
+        """
+        pass
+
     def select_worker(self) -> str:
         """Worker select strategy.
 
