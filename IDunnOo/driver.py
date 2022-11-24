@@ -29,7 +29,7 @@ class Driver:
         while True:
             cmd = input(">")
             print("Receive command: {}".format(cmd))
-            res_id = self.sub_task(MockDNN.hello_world("Guts"))
+            res_id = self.sub_task(MockDNN.hello_world(), ("Guts"))
             res_obj = self.get_task_res(res_id)
             res = pickle.loads(res_obj)
             print(res)
