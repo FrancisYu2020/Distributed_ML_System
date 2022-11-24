@@ -28,7 +28,7 @@ class GlobalScheduler:
         Returns:
             None
         """
-        self.rpc_server = zerorpc.Server()
+        self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind(
             "tcp://0.0.0.0:{}".format(GLOBAL_SCHEDULER_PORT))
 
