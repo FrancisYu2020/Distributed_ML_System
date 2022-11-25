@@ -47,6 +47,8 @@ class Driver:
         res_id = self.sub_task(MockDNN.hello_world, [
                                    "Guts", "Casgte", "Augustin", "Adale", "Buttin", "David", "Ella", "Fuze", "Harry", "Ive", "Jay", "Katlin", "Loki",
                                    "Mamba", "North", "Olive", "Porter", "Quora", "Rez", "Stella", "Telle", "Uber", "Viva", "Wa", "X", "Yelp", "Zelle"])
+        if not res_id:
+            print("Submit task failed, please resubmit.")
         if res_id == "NONE":
             print("No worker available, please try again.")
             return
@@ -86,11 +88,12 @@ class Driver:
 
         try:
             c = zerorpc.Client(
-                "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT), timeout=2)
+                "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT), timeout=30)
             res_id = c.sub_task(func_id, param_ids)
             print("Get res_id: {}".format(res_id))
         except Exception as e:
             print("Submit task failed, please resubmit. Error: {}".format(e))
+            return
         return res_id
 
     def get_task_res(self, res_id: str, target_file: str) -> object:
