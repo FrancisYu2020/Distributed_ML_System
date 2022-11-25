@@ -65,13 +65,16 @@ class GlobalScheduler:
 
         if worker_t.tab[worker] and not GCS.query(worker_t.tab[worker].t_id):
             # delete worker from worker table
+            func_id = worker_t.tab[worker].func_id
+            params_id = worker_t.tab[worker].params_id
+            t_id = worker_t.tab[worker].t_id
             worker_t.del_worker(worker)
             GCS.put(worker_t, WORKER_TABLE_NAME)
             logging.info("New Worker Table updated.")
             logging.info("Start to resubmit failed task.")
-            self.resub_task(worker_t.tab[worker].func_id,
-                            worker_t.tab[worker].params_id,
-                            worker_t.tab[worker].t_id)
+            self.resub_task(func_id,
+                            params_id,
+                            t_id)
             logging.info("Resubmitted failed task.")
             return
         logging.info("No task failed.")
