@@ -178,8 +178,7 @@ class GlobalScheduler:
         logging.info("Start to submit task.")
         # fetch worker table
         logging.info("Start to pull worker table.")
-        while not worker_t:
-            worker_t = GCS.get(WORKER_TABLE_NAME)
+        worker_t = GCS.get(WORKER_TABLE_NAME)
         logging.info("Worker Table pulled.")
         worker = self.select_worker(worker_t)
         if not worker:
