@@ -99,6 +99,7 @@ class GlobalScheduler:
         Returns:
             str: Selected worker host.
         """
+        return "fa22-cs425-2204.cs.illinois.edu"
         for w, info in worker_t.tab.items():
             if not info or GCS.query(info.t_id):
                 return w
