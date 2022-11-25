@@ -114,7 +114,7 @@ class GlobalScheduler:
                 return w
         return None
 
-    def resub_task(self, func_id: str, params_id: list, t_id: str = None) -> str:
+    def resub_task(self, func_id: str, params_id: list, t_id: str = None) -> None:
         """Resub a failed task to another worker.
 
         Receive a task from driver and use rpc to call worker execute it.
@@ -125,7 +125,7 @@ class GlobalScheduler:
             t_id (str): Task id, default will generate a unique id.
 
         Returns:
-            str: The result id of task.
+            None
         """
         while True:
             # try to resubmit task, if resubmit success, quit from loop and update worker table
@@ -144,12 +144,14 @@ class GlobalScheduler:
                     time.sleep(0.5)
             logging.info("Choose worker {}".format(worker))
             try:
-                c = zerorpc.Client("tcp://{}:{}".format(worker, WORKER_PORT), timeout=2)
+                c = zerorpc.Client(
+                    "tcp://{}:{}".format(worker, WORKER_PORT), timeout=2)
                 logging.info("Assigned task to {}.".format(worker))
                 res_id = c.recv_task(func_id, params_id, t_id)
                 break
             except Exception as e:
-                logging.error("Submit task failed, error: {}. Worker {} failed, start to delete it.".format(e, worker))
+                logging.error(
+                    "Submit task failed, error: {}. Worker {} failed, start to delete it.".format(e, worker))
                 worker_t.del_worker(worker)
                 GCS.put(worker_t, WORKER_TABLE_NAME)
                 logging.info("New Worker Table updated.")
@@ -158,7 +160,7 @@ class GlobalScheduler:
         GCS.put(worker_t, WORKER_TABLE_NAME)
         logging.info("Worker Table updated.")
         logging.info("Task submitted.")
-        return res_id
+        return
 
     def sub_task(self, func_id: str, params_id: list, t_id: str = None) -> str:
         """Recv a task from driver.
@@ -171,7 +173,7 @@ class GlobalScheduler:
             t_id (str): Task id, default will generate a unique id.
 
         Returns:
-            str: The result id of task.
+            str: The result id of task. "NONE" means no available worker, "ERROR" means submit task failed.
         """
         logging.info("Start to submit task.")
         # fetch worker table
@@ -184,7 +186,8 @@ class GlobalScheduler:
             return "NONE"
         logging.info("Choose worker {}".format(worker))
         try:
-            c = zerorpc.Client("tcp://{}:{}".format(worker, WORKER_PORT), timeout=2)
+            c = zerorpc.Client(
+                "tcp://{}:{}".format(worker, WORKER_PORT), timeout=2)
             logging.info("Assigned task to {}.".format(worker))
             res_id = c.recv_task(func_id, params_id, t_id)
         except Exception as e:

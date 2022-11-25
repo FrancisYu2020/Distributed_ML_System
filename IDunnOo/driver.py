@@ -28,7 +28,8 @@ class Driver:
         while True:
             cmd = input(">")
             print("Receive command: {}".format(cmd))
-            res_id = self.sub_task(MockDNN.hello_world, ["Guts", "Casgte", "Augustin"])
+            res_id = self.sub_task(MockDNN.hello_world, [
+                                   "Guts", "Casgte", "Augustin"])
             if res_id == "NONE":
                 print("No worker available, please try again.")
                 continue
@@ -59,7 +60,8 @@ class Driver:
         # heartbeat to check if main GS survive
         host = GLOBAL_SCHEDULER_HOST
         try:    # main GS survive
-            heartbeat_c = zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
+            heartbeat_c = zerorpc.Client(
+                "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
             heartbeat_c.heartbeat()
             heartbeat_c.close()
         except Exception as e:  # use hot standby GS

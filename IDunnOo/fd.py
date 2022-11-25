@@ -85,7 +85,7 @@ class Server:
             else:
                 # simply update whatever heard from the master
                 self.ML = json.loads(info)
-    
+
     def heartbeat(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((self.hostname, PING_PORT[self.hostID]))
@@ -134,6 +134,6 @@ class Server:
         t1 = threading.Thread(target=self.join)
         tn.start()
         t1.start()
-        
+
         tn.join()
         t1.join()

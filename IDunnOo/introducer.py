@@ -23,7 +23,7 @@ class Server:
             print("I am a pariah node :(")
         self.ML = []
         # self.neighbor_timestamps = {} # dict of key = hostname, value = [isInRing, timestamp], only used in master node to record a node status
-    
+
     def update(self):
         for host in self.ML:
             # broadcast the updated ML to every node marked in the ring
@@ -37,7 +37,8 @@ class Server:
         # heartbeat to check if main GS survive
         host = GLOBAL_SCHEDULER_HOST
         try:    # main GS survive
-            heartbeat_c = zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
+            heartbeat_c = zerorpc.Client(
+                "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
             heartbeat_c.heartbeat()
             heartbeat_c.close()
         except:  # use hot standby GS
@@ -46,12 +47,13 @@ class Server:
         c = zerorpc.Client(
             "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
         c.handle_fail_worker(worker)
-    
+
     def join_notice(self, worker):
         # heartbeat to check if main GS survive
         host = GLOBAL_SCHEDULER_HOST
         try:    # main GS survive
-            heartbeat_c = zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
+            heartbeat_c = zerorpc.Client(
+                "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
             heartbeat_c.heartbeat()
             heartbeat_c.close()
         except:  # use hot standby GS
@@ -131,6 +133,7 @@ class Server:
             target=self.listen_join_and_leave, name="listen_join_and_leave")
         tm.start()
         tm.join()
+
 
 s = Server()
 s.run()

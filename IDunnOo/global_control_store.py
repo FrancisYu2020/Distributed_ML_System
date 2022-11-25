@@ -12,19 +12,21 @@ class TaskInfo:
         self.func_id = func_id
         self.params_id = params_id
 
+
 class WorkerTable:
     def __init__(self) -> None:
         self.tab = {}   # worker -> TaskInfo
 
     def add_worker(self, worker) -> None:
         self.tab[worker] = None
-    
+
     def del_worker(self, worker) -> None:
         del self.tab[worker]
-    
+
     def set_worker_task(self, worker: str, t_id: str, func_id: str, params_id: str) -> None:
         t_info = TaskInfo(t_id, func_id, params_id)
         self.tab[worker] = t_info
+
 
 class GlobalControlState:
     """Global Control State (GCS) is used to try to make every component as stateless as possible.
