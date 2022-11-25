@@ -102,17 +102,16 @@ class Worker:
             None
         """
         rpc_p = Thread(target = self.rpc_server.run)
-        fd_p = Thread(target = self.fd.run)
         rpc_p.start()
         print("Worker rpc service started.")
         logging.info("Worker rpc service started.")
-        fd_p.start()
         print("Worker failure detector started.")
         logging.info("Worker failure detector started.")
         print("A worker started.")
         logging.info("A worker started.")
+        self.fd.run()
         rpc_p.join()
-        fd_p.join()
+        
 
 if __name__ == "__main__":
     w = Worker(WORKER_PORT)
