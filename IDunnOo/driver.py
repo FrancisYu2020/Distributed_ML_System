@@ -32,6 +32,9 @@ class Driver:
             if res_id == "NONE":
                 print("No worker available, please try again.")
                 continue
+            elif res_id == "ERROR":
+                print("Submit task failed, please resubmit.")
+                continue
             # TODO: Use the result to do other things.
             res = self.get_task_res(res_id)
             print(res)
@@ -62,10 +65,13 @@ class Driver:
         except Exception as e:  # use hot standby GS
             host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
 
-        c = zerorpc.Client(
-            "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
-        res_id = c.sub_task(func_id, param_ids)
-        print("Get res_id: {}".format(res_id))
+        try:
+            c = zerorpc.Client(
+                "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT), timeout=2)
+            res_id = c.sub_task(func_id, param_ids)
+            print("Get res_id: {}".format(res_id))
+        except Exception as e:
+            print("Submit task failed, please resubmit. Error: {}".format(e))
         return res_id
 
     def get_task_res(self, res_id: str) -> object:
