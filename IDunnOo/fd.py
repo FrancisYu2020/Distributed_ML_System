@@ -131,7 +131,7 @@ class Server:
     def run(self, read_cmd):
         tn = threading.Thread(target=self.listen_to_master,
                               name="listen_to_master")
-        t1 = threading.Thread(target=self.shell, name="shell", args=(read_cmd))
+        t1 = threading.Thread(target=self.shell, name="shell", args=[read_cmd])
         tn.start()
         t1.start()
         
