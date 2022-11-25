@@ -110,6 +110,7 @@ class Driver:
         with self.mutex:
             with open(target_file, "ab") as f:
                 f.write(res)
+        print("Finish a task.")
         return
 
 
