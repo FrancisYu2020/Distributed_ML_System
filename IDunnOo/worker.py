@@ -103,23 +103,22 @@ def run() -> None:
         None
     """
     w = Worker(WORKER_PORT)
-    rpc_t = Process(target = w.rpc_server.run)
-    # fd_t = Process(target = w.fd.run)
+    rpc_t = Thread(target = w.start_rpc_service)
+    fd_t = Thread(target = w.fd.run)
 
-    rpc_t.run()
+    rpc_t.start()
     print("Worker rpc service started.")
     logging.info("Worker rpc service started.")
     
-    
+    fd_t.start()
     print("Worker failure detector started.")
     logging.info("Worker failure detector started.")
     
     print("A worker started.")
     logging.info("A worker started.")
     
-    # fd_t.run()
-    w.fd.run()
-    
+    fd_t.join()
+    rpc_t.join()
     # w.rpc_server.run()
         
 
