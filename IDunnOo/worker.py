@@ -102,16 +102,19 @@ class Worker:
         Returns:
             None
         """
-        rpc_p = Process(target = self.rpc_server.run)
-        rpc_p.start()
+        rpc_t = Thread(target = self.rpc_server.run)
+        fd_t = Thread(target = self.fd.run)
+
+        rpc_t.start()
         print("Worker rpc service started.")
         logging.info("Worker rpc service started.")
+        fd_t.start()
         print("Worker failure detector started.")
         logging.info("Worker failure detector started.")
         print("A worker started.")
         logging.info("A worker started.")
-        self.fd.run()
-        rpc_p.join()
+        fd_t.join()
+        rpc_t.join()
         
 
 if __name__ == "__main__":
