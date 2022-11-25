@@ -93,30 +93,30 @@ class Worker:
         GCS.put(res, res_id)
         logging.info("Result stored.")
 
-    def run(self) -> None:
-        """Run the worker process.
+def run() -> None:
+    """Run the worker process.
 
-        Args:
-            None
+    Args:
+        None
 
-        Returns:
-            None
-        """
-        rpc_t = Thread(target = self.rpc_server.run)
-        fd_t = Thread(target = self.fd.run)
+    Returns:
+        None
+    """
+    w = Worker(WORKER_PORT)
+    rpc_t = Thread(target = w.rpc_server.run)
+    fd_t = Thread(target = w.fd.run)
 
-        rpc_t.start()
-        print("Worker rpc service started.")
-        logging.info("Worker rpc service started.")
-        fd_t.start()
-        print("Worker failure detector started.")
-        logging.info("Worker failure detector started.")
-        print("A worker started.")
-        logging.info("A worker started.")
-        fd_t.join()
-        rpc_t.join()
+    rpc_t.start()
+    print("Worker rpc service started.")
+    logging.info("Worker rpc service started.")
+    fd_t.start()
+    print("Worker failure detector started.")
+    logging.info("Worker failure detector started.")
+    print("A worker started.")
+    logging.info("A worker started.")
+    fd_t.join()
+    rpc_t.join()
         
 
 if __name__ == "__main__":
-    w = Worker(WORKER_PORT)
-    w.run()
+    run()
