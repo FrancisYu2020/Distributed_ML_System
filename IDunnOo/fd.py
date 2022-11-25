@@ -4,6 +4,7 @@ import socket
 import json
 import time
 import threading
+import sys
 from glob_var import *
 
 
@@ -104,7 +105,7 @@ class Server:
         print("=======================================================")
         print("Please input command:")
         while 1:
-            command = input()
+            command = sys.stdin.readline().strip("\n")
             if command == "list_mem":
                 with ML_lock:
                     print(self.ML)
