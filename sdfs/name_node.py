@@ -261,7 +261,7 @@ def run(fd):
                     # threads = [threading.Thread(target=listen_ack, args=[id, name_node.done, replicas[i]]) for i, id in enumerate(ids)]
                     # for t in threads:
                     #     t.start()
-
+                    name_node.ft.insert_file(args[1], replicas)
                     data = " ".join(replicas).encode("utf-8")
                     s.sendto(data, client_addr)
                     
