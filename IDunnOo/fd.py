@@ -94,7 +94,7 @@ class Server:
         while True:
             conn.recv(100)
 
-    def shell(self, read_cmd):
+    def shell(self):
         print("=======================================================")
         print("1. list_mem: list current membership list in the ring")
         print("2. list_self: list current node")
@@ -105,7 +105,7 @@ class Server:
         print("=======================================================")
         print("Please input command:")
         while 1:
-            command = read_cmd()
+            command = input(">")
             print(command)
             if command == "list_mem":
                 with ML_lock:
@@ -128,10 +128,10 @@ class Server:
             else:
                 print("invalid command, use help to check available commands!")
 
-    def run(self, read_cmd):
+    def run(self):
         tn = threading.Thread(target=self.listen_to_master,
                               name="listen_to_master")
-        t1 = threading.Thread(target=self.shell, name="shell", args=[read_cmd])
+        t1 = threading.Thread(target=self.shell, name="shell")
         tn.start()
         t1.start()
         
