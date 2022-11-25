@@ -1,6 +1,7 @@
 import zerorpc
 import time
 from global_control_store import GlobalControlState as GCS
+import threading
 from glob_var import *
 from DNNs import *
 
@@ -9,8 +10,19 @@ class Driver:
     """Driver (client) is used to submit tasks to and get results, it can be regarded as Client.
 
     Attributes:
-        None
+        lock (threading.Lock): The lock used for mutli threading.
     """
+
+    def __init__(self) -> None:
+        """The init func of Driver.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        self.mutex = threading.Lock()
 
     def shell(self) -> None:
         """The console shell, accept input and handle it.
@@ -28,17 +40,22 @@ class Driver:
         while True:
             cmd = input(">")
             print("Receive command: {}".format(cmd))
-            res_id = self.sub_task(MockDNN.hello_world, [
-                                   "Guts", "Casgte", "Augustin"])
-            if res_id == "NONE":
-                print("No worker available, please try again.")
-                continue
-            elif res_id == "ERROR":
-                print("Submit task failed, please resubmit.")
-                continue
+            self.execute()
             # TODO: Use the result to do other things.
-            res = self.get_task_res(res_id)
-            print(res)
+
+    def execute(self) -> None:
+        res_id = self.sub_task(MockDNN.hello_world, [
+                                   "Guts", "Casgte", "Augustin", "Adale", "Buttin", "David", "Ella", "Fuze", "Harry", "Ive", "Jay", "Katlin", "Loki",
+                                   "Mamba", "North", "Olive", "Porter", "Quora", "Rez", "Stella", "Telle", "Uber", "Viva", "Wa", "X", "Yelp", "Zelle"])
+        if res_id == "NONE":
+            print("No worker available, please try again.")
+            return
+        elif res_id == "ERROR":
+            print("Submit task failed, please resubmit.")
+            return
+        t_res = threading.Thread(target=self.get_task_res, args=(res_id,"test_write_file.txt",))
+        t_res.start()
+        return
 
     def sub_task(self, func: object, data: list) -> str:
         """Sub a task to GS.
@@ -76,22 +93,24 @@ class Driver:
             print("Submit task failed, please resubmit. Error: {}".format(e))
         return res_id
 
-    def get_task_res(self, res_id: str) -> object:
+    def get_task_res(self, res_id: str, target_file: str) -> object:
         """Get a task to GS.
 
         Args:
-            func (object): Task func object.
-            data (list): A list of data objects.
+            res_id (id): The id of result object.
+            target_file (str): The name of target file.
 
         Returns:
             object: The result object.
         """
         res = None
         while not res:
-            print("Still working, please wait...")
             res = GCS.get(res_id)
             time.sleep(2)
-        return res
+        with self.mutex:
+            with open(target_file, "ab") as f:
+                f.write(res)
+        return
 
 
 if __name__ == "__main__":
