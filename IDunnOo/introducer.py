@@ -67,7 +67,7 @@ class Server:
             if host not in self.ML:
                 return
             self.ML.remove(host)
-            t = threading.Thread(target=self.fail_notice, args=(host))
+            t = threading.Thread(target=self.fail_notice, args=(host,))
             t.start()
             self.update()
 
