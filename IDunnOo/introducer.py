@@ -93,7 +93,7 @@ class Server:
                     # self.neighbor_timestamps[news[1]][0] = 1
                     # self.neighbor_timestamps[news[1]][1] = self.timer.time()
                     self.ML.append(news[1])
-                    self.join_notice()
+                    self.join_notice(news[1])
                     print("master send join messages: ", self.ML)
                     self.update()
             else:
