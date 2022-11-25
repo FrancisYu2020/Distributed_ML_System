@@ -103,10 +103,10 @@ class Worker:
         """
         rpc_p = Process(target = self.rpc_server.run)
         fd_p = Process(target = self.fd.run)
-        rpc_p.run()
-        fd_p.run()
+        rpc_p.start()
         print("Worker rpc service started.")
         logging.info("Worker rpc service started.")
+        fd_p.start()
         print("Worker failure detector started.")
         logging.info("Worker failure detector started.")
         print("A worker started.")
