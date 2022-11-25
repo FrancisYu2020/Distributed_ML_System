@@ -106,6 +106,7 @@ class Server:
         print("Please input command:")
         while 1:
             command = sys.stdin.readline().strip("\n")
+            print(command)
             if command == "list_mem":
                 with ML_lock:
                     print(self.ML)
