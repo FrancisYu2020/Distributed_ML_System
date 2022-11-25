@@ -112,7 +112,7 @@ class Driver:
             time.sleep(2)
         with self.mutex:
             with open(target_file, "a") as f:
-                f.write(res)
+                f.write(res + "\n")
         print("Finish a task.")
         return
 
