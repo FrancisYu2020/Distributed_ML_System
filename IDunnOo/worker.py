@@ -101,8 +101,8 @@ class Worker:
         Returns:
             None
         """
-        rpc_p = Process(self.rpc_server.run)
-        fd_p = Process(self.fd.run)
+        rpc_p = Process(target = self.rpc_server.run)
+        fd_p = Process(target = self.fd.run)
         rpc_p.run()
         fd_p.run()
         print("Worker rpc service started.")
