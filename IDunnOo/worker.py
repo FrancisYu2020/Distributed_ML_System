@@ -7,7 +7,6 @@ from glob_var import *
 from DNNs import *
 from fd import Server as FDServer
 from threading import Thread
-from multiprocessing import Process
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
