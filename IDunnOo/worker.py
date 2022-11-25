@@ -107,16 +107,15 @@ def run() -> None:
     fd_t = Process(target = w.fd.run)
 
     # rpc_t.start()
-    print("Worker rpc service started.")
-    logging.info("Worker rpc service started.")
     fd_t.start()
     print("Worker failure detector started.")
     logging.info("Worker failure detector started.")
+    print("Worker rpc service started.")
+    logging.info("Worker rpc service started.")
     print("A worker started.")
     logging.info("A worker started.")
-    w.rpc_server.run()
     fd_t.join()
-    # rpc_t.join()
+    w.rpc_server.run()
         
 
 if __name__ == "__main__":
