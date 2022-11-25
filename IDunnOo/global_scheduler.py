@@ -43,6 +43,7 @@ class GlobalScheduler:
         Returns:
             None
         """
+        return
 
     def handle_fail_worker(self, worker: str) -> None:
         """Worker failed, start new thread to check if failed worker has task and reassign the failed task.
