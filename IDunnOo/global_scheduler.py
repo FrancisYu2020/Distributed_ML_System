@@ -105,7 +105,7 @@ class GlobalScheduler:
                 return w
         return None
 
-    def sub_task(self, func_id: str, params_id: list) -> str:
+    def sub_task(self, func_id: str, params_id: list, t_id: str = None) -> str:
         """Recv a task from driver.
 
         Receive a task from driver and use rpc to call worker execute it.
@@ -113,6 +113,7 @@ class GlobalScheduler:
         Args:
             func_id (str): The id of func object.
             params_id (list): A list of params object id.
+            t_id (str): Task id, default will generate a unique id.
 
         Returns:
             str: The result id of task.
@@ -129,7 +130,7 @@ class GlobalScheduler:
         logging.info("Choose worker {}".format(worker))
         c = zerorpc.Client("tcp://{}:{}".format(worker, WORKER_PORT))
         logging.info("Assigned task to {}.".format(worker))
-        res_id = c.recv_task(func_id, params_id)
+        res_id = c.recv_task(func_id, params_id, t_id)
         worker_t.set_worker_task(worker, res_id, func_id, params_id)
         logging.info("Start to update Worker Table.")
         GCS.put(worker_t, WORKER_TABLE_NAME)

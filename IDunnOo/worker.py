@@ -41,7 +41,7 @@ class Worker:
         self.rpc_server.bind("tcp://0.0.0.0:{}".format(self.port))
         self.fd = FDServer()
 
-    def recv_task(self, func_id: str, param_ids: list) -> str:
+    def recv_task(self, func_id: str, param_ids: list, t_id: str = None) -> str:
         """Receive the task, start a thread to execute the task and return the result object id.
 
         Args:
@@ -51,7 +51,7 @@ class Worker:
         Returns:
             str: The result id of result.
         """
-        res_id = uuid.uuid1().hex
+        res_id = uuid.uuid1().hex if not t_id else t_id
         logging.info("Start execute task.")
         t = Thread(target=self.exec_task, args=(func_id, param_ids, res_id))
         t.start()
