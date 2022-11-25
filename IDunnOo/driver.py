@@ -56,10 +56,10 @@ class Driver:
         # heartbeat to check if main GS survive
         host = GLOBAL_SCHEDULER_HOST
         try:    # main GS survive
-            heartbeat_c = zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=5)
+            heartbeat_c = zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
             heartbeat_c.heartbeat()
+            heartbeat_c.close()
         except Exception as e:  # use hot standby GS
-            print(e)
             host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
 
         c = zerorpc.Client(
