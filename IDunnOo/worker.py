@@ -92,6 +92,9 @@ class Worker:
         logging.info("Finish executing func. Start to store result to GCS.")
         GCS.put(res, res_id)
         logging.info("Result stored.")
+    
+    def start_rpc_service(self):
+        self.rpc_server.run()
 
 def run() -> None:
     """Run the worker process.
@@ -103,7 +106,7 @@ def run() -> None:
         None
     """
     w = Worker(WORKER_PORT)
-    rpc_t = Thread(target = w.rpc_server.run)
+    rpc_t = Thread(target = w.start_rpc_service)
     fd_t = Thread(target = w.fd.run)
 
     rpc_t.start()
