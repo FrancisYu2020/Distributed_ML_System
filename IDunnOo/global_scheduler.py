@@ -63,8 +63,10 @@ class GlobalScheduler:
             return
         if worker_t.tab[worker] and not GCS.query(worker_t.tab[worker].t_id):
             self.sub_task(worker_t.tab[worker].func_id,
-                          worker_t.tab[worker].params_id)
+                          worker_t.tab[worker].params_id,
+                          worker_t.tab[worker].t_id)
             logging.info("Resub failed task.")
+            return
         logging.info("No task failed.")
         return
 
