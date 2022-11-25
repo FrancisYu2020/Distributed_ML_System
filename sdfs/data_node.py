@@ -21,8 +21,9 @@ class DataNode:
 
     def put_file(self, sdfs_filename, content, replicas):
         sdfs_filename = "*".join(sdfs_filename.split("/"))
-        forward_file_t = threading.Thread(target=self.forward_file, args=[sdfs_filename, content, replicas])
-        forward_file_t.start()
+        # forward_file_t = threading.Thread(target=self.forward_file, args=[sdfs_filename, content, replicas])
+        # forward_file_t.start()
+        self.forward_file(sdfs_filename, content, replicas)
         return
 
     def forward(self, sdfs_filename, content, replicas):
@@ -54,12 +55,11 @@ class DataNode:
         f.write(content)
         f.close()
         logging.info("Put file end: " + sdfs_filename)
-        ack = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        dst_addr = (self.get_namenode_host(), ACK_PORTS[self.host_id])
-        data = "ack"
-        ack.sendto(data.encode("utf-8"), dst_addr)
-        ack.close()
-
+        # ack = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # dst_addr = (self.get_namenode_host(), ACK_PORTS[self.host_id])
+        # data = "ack"
+        # ack.sendto(data.encode("utf-8"), dst_addr)
+        # ack.close()
         self.file_info[sdfs_filename] += 1
         logging.info("Put file " + filename + ", current version is " + str(self.file_info[sdfs_filename]))
 

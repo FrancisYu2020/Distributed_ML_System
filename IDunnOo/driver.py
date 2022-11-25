@@ -111,7 +111,7 @@ class Driver:
             res = GCS.get(res_id)
             time.sleep(2)
         with self.mutex:
-            with open(target_file, "ab") as f:
+            with open(target_file, "a") as f:
                 f.write(res)
         print("Finish a task.")
         return

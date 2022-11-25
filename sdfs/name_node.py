@@ -256,27 +256,27 @@ def run(fd):
                     logging.info("Receive put request: " + args[1])
                     replicas = name_node.put_file(args[1])
 
-                    ids = [int(r[13:15]) for r in replicas]
-                    name_node.done = defaultdict(set)
-                    threads = [threading.Thread(target=listen_ack, args=[id, name_node.done, replicas[i]]) for i, id in enumerate(ids)]
-                    for t in threads:
-                        t.start()
+                    # ids = [int(r[13:15]) for r in replicas]
+                    # name_node.done = defaultdict(set)
+                    # threads = [threading.Thread(target=listen_ack, args=[id, name_node.done, replicas[i]]) for i, id in enumerate(ids)]
+                    # for t in threads:
+                    #     t.start()
 
                     data = " ".join(replicas).encode("utf-8")
                     s.sendto(data, client_addr)
                     
-                    while 1:
-                        # print(name_node.done)
-                        if len(name_node.done["DONE"]) >= 1 or len(name_node.done["DONE"]) == len(replicas):
-                            if args[1] not in name_node.ft.files:
-                                name_node.ft.insert_file(args[1], replicas)
-                            s.sendto("finish".encode("utf-8"), client_addr)
-                            break
-                        if (len(name_node.done["DONE"]) + len(name_node.done["FAIL"])) == len(replicas):
-                            s.sendto("fail".encode("utf-8"), client_addr)
-                            break
-                        time.sleep(0.2)
-                    logging.info("Finish put request: " + args[1])
+                    # while 1:
+                    #     # print(name_node.done)
+                    #     if len(name_node.done["DONE"]) >= 1 or len(name_node.done["DONE"]) == len(replicas):
+                    #         if args[1] not in name_node.ft.files:
+                    #             name_node.ft.insert_file(args[1], replicas)
+                    #         s.sendto("finish".encode("utf-8"), client_addr)
+                    #         break
+                    #     if (len(name_node.done["DONE"]) + len(name_node.done["FAIL"])) == len(replicas):
+                    #         s.sendto("fail".encode("utf-8"), client_addr)
+                    #         break
+                    #     time.sleep(0.2)
+                    # logging.info("Finish put request: " + args[1])
                     
                 elif args[0] == "get":
                     # print("Receive get request")

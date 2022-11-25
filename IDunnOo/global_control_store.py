@@ -60,24 +60,20 @@ class GlobalControlState:
 
         bytes_obj = pickle.dumps(obj)
         # call rpc to send object
-        c = zerorpc.Client(timeout=None)
-        c.connect("tcp://{}:{}".format(replicas[0], DATA_NODE_PORT))
-        c.put_file(objId, bytes_obj, replicas[1:])
-        c.close()
-
-        # recv result
-        s.settimeout(30)
         try:
-            finish, _ = s.recvfrom(4096)
-        except Exception as e:
-            logging.error("Put object timedout.")
-        s.close()
-
-        if finish.decode("utf-8") == "finish":
+            c = zerorpc.Client(timeout=None)
+            c.connect("tcp://{}:{}".format(replicas[0], DATA_NODE_PORT))
+            c.put_file(objId, bytes_obj, replicas[1:])
+            c.close()
             logging.info(
                 "Put object success, the id of object is: {}.".format(objId))
-        else:
+        # recv result
+        # s.settimeout(30)
+        # try:
+        #     finish, _ = s.recvfrom(4096)
+        except Exception as e:
             logging.error("Put object failed.")
+        s.close()
         return objId
 
     def get(objId: str) -> object:
