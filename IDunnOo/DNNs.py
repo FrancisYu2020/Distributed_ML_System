@@ -1,3 +1,5 @@
+import time
+
 class MockDNN():
     def __init__(self) -> None:
         pass
@@ -5,6 +7,7 @@ class MockDNN():
     def hello_world(names) -> str:
         ret = "Welcome to IDunno, "
         for name in names:
-            ret += name
+            time.sleep(2)
+            ret += name + " "
         ret += "."
         return ret
