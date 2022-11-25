@@ -95,7 +95,7 @@ class GlobalControlState:
 
         replicas = replicas.decode("utf-8")
         if not replicas:
-            logging.warning("Cannot find target object.")
+            logging.warning("Cannot find target object {}.".format(objId))
             return None
         replicas = replicas.split(" ")
 
