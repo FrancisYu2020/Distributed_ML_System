@@ -6,7 +6,7 @@ from threading import Thread
 from glob_var import *
 from DNNs import *
 from fd import Server as FDServer
-from multiprocessing import Process
+from threading import Thread
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
@@ -101,8 +101,8 @@ class Worker:
         Returns:
             None
         """
-        rpc_p = Process(target = self.rpc_server.run)
-        fd_p = Process(target = self.fd.run)
+        rpc_p = Thread(target = self.rpc_server.run)
+        fd_p = Thread(target = self.fd.run)
         rpc_p.start()
         print("Worker rpc service started.")
         logging.info("Worker rpc service started.")
