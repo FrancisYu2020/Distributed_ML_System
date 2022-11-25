@@ -6,16 +6,25 @@ import logging
 from glob_var import *
 
 
-class TaskTable:
+class TaskInfo:
+    def __init__(self, t_id: str, func_id: str, params_id: list) -> None:
+        self.t_id = t_id
+        self.func_id = func_id
+        self.params_id = params_id
+
+class WorkerTable:
     def __init__(self) -> None:
-        self.tab = {}   # taskId -> worker
+        self.tab = {}   # worker -> TaskInfo
 
-    def add_task(self, t_id: str, worker: str) -> None:
-        self.tab[t_id] = worker
+    def add_worker(self, worker) -> None:
+        self.tab[worker] = None
     
-    def del_task(self, t_id) -> None:
-        del self.tab[t_id]
-
+    def del_worker(self, worker) -> None:
+        del self.tab[worker]
+    
+    def set_worker_task(self, worker: str, t_id: str, func_id: str, params_id: str) -> None:
+        t_info = TaskInfo(t_id, func_id, params_id)
+        self.tab[worker] = t_info
 
 class GlobalControlState:
     """Global Control State (GCS) is used to try to make every component as stateless as possible.
@@ -106,4 +115,19 @@ class GlobalControlState:
                 continue
         logging.error("Get object {} failed.".format(objId))
         return None
-        
+
+    def query(objId: str) -> bool:
+        """"Query if an object in SDFS.
+
+        Args:
+            objId (str): The id of target object.
+
+        Returns:
+            bool: True for exists False otherwise.
+        """
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        dst_addr = (NAME_NODE_HOST, NAME_NODE_PORT)
+        data = "query {}".format(objId)
+        s.sendto(data.encode("utf-8"), dst_addr)
+        exists, _ = s.recvfrom(4096)
+        return True if exists.decode("utf-8") == "y" else False

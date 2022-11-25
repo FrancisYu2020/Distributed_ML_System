@@ -2,8 +2,7 @@ import logging
 import zerorpc
 from glob_var import *
 from global_control_store import GlobalControlState as GCS
-from global_control_store import TaskTable
-
+from global_control_store import WorkerTable
 
 
 logging.basicConfig(level=logging.INFO,
@@ -34,7 +33,7 @@ class GlobalScheduler:
         self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind(
             "tcp://0.0.0.0:{}".format(GLOBAL_SCHEDULER_PORT))
-    
+
     def heartbeat(self) -> None:
         """Heartbeat func to detect survive, basically do nothing.
 
@@ -45,21 +44,54 @@ class GlobalScheduler:
             None
         """
 
-    def fail_worker(self, host: str) -> None:
-        """Worker failed, check if it has task and reassign the failed task.
+    def handle_fail_worker(self, worker: str) -> None:
+        """Worker failed, start new thread to check if failed worker has task and reassign the failed task.
 
         Args:
-            host (str): The failed worker host name.
+            worker (str): The failed worker host name.
 
         Returns:
             None
         """
-        pass
+        logging.warning("Failed worker trigger: {}".format(worker))
+        logging.info("Start to get Worker Table.")
+        worker_t = GCS.get(WORKER_TABLE_NAME)
+        logging.info("Worker Table received.")
+        if not worker_t:
+            logging.info("No task failed.")
+            return
+        if worker in worker_t and not GCS.query(worker_t.tab[worker].t_id):
+            self.sub_task(worker_t.tab[worker].func_id,
+                          worker_t.tab[worker].params_id)
+            logging.info("Resub failed task.")
+        logging.info("No task failed.")
+        return
 
-    def select_worker(self) -> str:
+    def add_worker(self, worker: str) -> None:
+        """Triggered by fd.
+
+        Select idle worker.
+
+        Args:
+            worker (str): new worker.
+
+        Returns:
+            None
+        """
+        logging.info("Start to get Worker Table.")
+        worker_t = GCS.get(WORKER_TABLE_NAME)
+        logging.info("Worker Table received.")
+        if not worker_t:
+            worker_t = WorkerTable()
+        worker_t.add_worker(worker)
+        logging.info("Start to write new Worker Table.")
+        worker_t = GCS.put(worker_t, WORKER_TABLE_NAME)
+        logging.info("New Worker Table updated to GCS.")
+
+    def select_worker(self, worker_t: WorkerTable) -> str:
         """Worker select strategy.
 
-        Select worker based on execute rate.
+        Select idle worker.
 
         Args:
             None
@@ -67,16 +99,10 @@ class GlobalScheduler:
         Returns:
             str: Selected worker host.
         """
-        # TODO: finish select part
-        # fetch task table
-        task_t = GCS.get(TASK_TABLE_NAME)
-        if not task_t:
-            task_t = TaskTable()
-        # TODO: complete modify task_t
-        # modify task_t...
-        GCS.put(task_t)
-        worker = "fa22-cs425-2205.cs.illinois.edu"
-        return worker
+        for w, info in worker_t.tab.items():
+            if not info or GCS.query(info.t_id):
+                return w
+        return None
 
     def sub_task(self, func_id: str, params_id: list) -> str:
         """Recv a task from driver.
@@ -90,11 +116,24 @@ class GlobalScheduler:
         Returns:
             str: The result id of task.
         """
-        logging.info("Recv task from driver.")
-        worker = self.select_worker()
+        logging.info("Start to submit task.")
+        # fetch worker table
+        logging.info("Start to pull worker table.")
+        worker_t = GCS.get(WORKER_TABLE_NAME)
+        logging.info("Worker Table pulled.")
+        worker = self.select_worker(worker_t)
+        if not worker:
+            logging.warning("No worker available.")
+            return "NONE"
+        logging.info("Choose worker {}".format(worker))
         c = zerorpc.Client("tcp://{}:{}".format(worker, WORKER_PORT))
         logging.info("Assigned task to {}.".format(worker))
         res_id = c.recv_task(func_id, params_id)
+        worker_t.set_worker_task(worker, res_id, func_id, params_id)
+        logging.info("Start to update Worker Table.")
+        GCS.put(worker_t, WORKER_TABLE_NAME)
+        logging.info("Worker Table updated.")
+        logging.info("Task submitted.")
         return res_id
 
     def run(self) -> None:

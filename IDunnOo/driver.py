@@ -29,6 +29,10 @@ class Driver:
             cmd = input(">")
             print("Receive command: {}".format(cmd))
             res_id = self.sub_task(MockDNN.hello_world, ["Guts"])
+            if res_id == "NONE":
+                print("No worker available, please try again.")
+                continue
+            # TODO: Use the result to do other things.
             res = self.get_task_res(res_id)
             print(res)
 

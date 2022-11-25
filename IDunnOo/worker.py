@@ -5,7 +5,8 @@ import uuid
 from threading import Thread
 from glob_var import *
 from DNNs import *
-
+from fd import Server as FDServer
+from multiprocessing import Process
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
@@ -22,6 +23,7 @@ class Worker:
     Attributes:
         worker_port: The port num of worker.
         rpc_server: The server to provied worker service, implemented by zerorpc.
+        fd: The failure detector used to monitor if worker is alive.
     """
 
     def __init__(self, worker_port: int) -> None:
@@ -36,6 +38,7 @@ class Worker:
         self.port = worker_port
         self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind("tcp://0.0.0.0:{}".format(self.port))
+        self.fd = FDServer()
 
     def recv_task(self, func_id: str, param_ids: list) -> str:
         """Receive the task, start a thread to execute the task and return the result object id.
@@ -98,9 +101,18 @@ class Worker:
         Returns:
             None
         """
+        rpc_p = Process(self.rpc_server.run)
+        fd_p = Process(self.fd.run)
+        rpc_p.run()
+        fd_p.run()
+        print("Worker rpc service started.")
+        logging.info("Worker rpc service started.")
+        print("Worker failure detector started.")
+        logging.info("Worker failure detector started.")
+        print("A worker started.")
         logging.info("A worker started.")
-        self.rpc_server.run()
-
+        rpc_p.join()
+        fd_p.join()
 
 if __name__ == "__main__":
     w = Worker(WORKER_PORT)

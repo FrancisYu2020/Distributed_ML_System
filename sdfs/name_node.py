@@ -294,6 +294,11 @@ def run(fd):
                         data = "nack"
                     s.sendto(data.encode("utf-8"), client_addr)
                     logging.info("Finish delete request: " + args[1])
+                elif args[0] == "query":
+                    # print("Receive ls request: " + args[1])
+                    logging.info("Receive ls request: " + args[1])
+                    data = "y" if name_node.ls(args[1]) else "n"
+                    s.sendto(data.encode("utf-8"), client_addr)
                 elif args[0] == "ls":
                     # print("Receive ls request: " + args[1])
                     logging.info("Receive ls request: " + args[1])

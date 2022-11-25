@@ -33,25 +33,40 @@ class Server:
             s1.close()
             print("successfully send ML: ", self.ML)
 
+    def fail_notice(self, worker):
+        # heartbeat to check if main GS survive
+        host = GLOBAL_SCHEDULER_HOST
+        try:    # main GS survive
+            with zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2) as heartbeat_c:
+                heartbeat_c.heartbeat()
+        except:  # use hot standby GS
+            host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
+
+        c = zerorpc.Client(
+            "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
+        c.handle_fail_worker(worker)
+    
+    def join_notice(self, worker):
+        # heartbeat to check if main GS survive
+        host = GLOBAL_SCHEDULER_HOST
+        try:    # main GS survive
+            with zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2) as heartbeat_c:
+                heartbeat_c.heartbeat()
+        except:  # use hot standby GS
+            host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
+
+        c = zerorpc.Client(
+            "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
+        c.add_worker(worker)
+
     def fail(self, host):
         # node leave, do nothing but send a leave request ["leave", host] to master
         with ML_lock:
             if host not in self.ML:
                 return
             self.ML.remove(host)
-            
-            # heartbeat to check if main GS survive
-            host = GLOBAL_SCHEDULER_HOST
-            try:    # main GS survive
-                with zerorpc.Client("tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2) as heartbeat_c:
-                    heartbeat_c.heartbeat()
-            except:  # use hot standby GS
-                host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
-
-            c = zerorpc.Client(
-                "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
-            c.fail_worker(host)
-
+            t = threading.Thread(target=self.fail_notice, args=(host))
+            t.start()
             self.update()
 
     def listen_join_and_leave(self):
@@ -78,6 +93,7 @@ class Server:
                     # self.neighbor_timestamps[news[1]][0] = 1
                     # self.neighbor_timestamps[news[1]][1] = self.timer.time()
                     self.ML.append(news[1])
+                    self.join_notice()
                     print("master send join messages: ", self.ML)
                     self.update()
             else:
