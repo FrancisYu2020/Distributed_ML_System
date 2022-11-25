@@ -28,7 +28,7 @@ class Driver:
         while True:
             cmd = input(">")
             print("Receive command: {}".format(cmd))
-            res_id = self.sub_task(MockDNN.hello_world, ["Guts"])
+            res_id = self.sub_task(MockDNN.hello_world, ["Guts", "Casgte", "Augustin"])
             if res_id == "NONE":
                 print("No worker available, please try again.")
                 continue
