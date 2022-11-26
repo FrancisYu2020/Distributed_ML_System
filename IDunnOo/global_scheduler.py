@@ -20,6 +20,7 @@ class GlobalScheduler:
 
     Attributes:
         rpc_server: The server to provied scheduler service, implemented by zerorpc.
+        wt_cache: The cache of worker table.
     """
 
     def __init__(self) -> None:
@@ -34,6 +35,19 @@ class GlobalScheduler:
         self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind(
             "tcp://0.0.0.0:{}".format(GLOBAL_SCHEDULER_PORT))
+        self.wt_cache = None
+    
+    def __write_wt_wrapper(self, new_wt: WorkerTable) -> None:
+        """The wrapper of write to wt.
+        
+        Args: 
+            new_wt (WorkerTable): New worker table.
+
+        Returns: 
+            None
+        """
+        self.wt_cache = new_wt
+        GCS.put(self.wt_cache, WORKER_TABLE_NAME)
 
     def heartbeat(self) -> None:
         """Heartbeat func to detect survive, basically do nothing.
@@ -57,7 +71,7 @@ class GlobalScheduler:
         """
         logging.warning("Failed worker trigger: {}".format(worker))
         logging.info("Start to get Worker Table.")
-        worker_t = GCS.get(WORKER_TABLE_NAME)
+        worker_t = GCS.get(WORKER_TABLE_NAME) if not self.wt_cache else self.wt_cache
         logging.info("Worker Table received.")
         if not worker_t:
             logging.info("No task failed.")
@@ -69,7 +83,7 @@ class GlobalScheduler:
             params_id = worker_t.tab[worker].params_id
             t_id = worker_t.tab[worker].t_id
             worker_t.del_worker(worker)
-            GCS.put(worker_t, WORKER_TABLE_NAME)
+            self.__write_wt_wrapper(worker_t)
             logging.info("New Worker Table updated.")
             logging.info("Start to resubmit failed task.")
             self.resub_task(func_id,
@@ -92,13 +106,13 @@ class GlobalScheduler:
             None
         """
         logging.info("Start to get Worker Table.")
-        worker_t = GCS.get(WORKER_TABLE_NAME)
+        worker_t = GCS.get(WORKER_TABLE_NAME) if not self.wt_cache else self.wt_cache
         logging.info("Worker Table received.")
         if not worker_t:
             worker_t = WorkerTable()
         worker_t.add_worker(worker)
         logging.info("Start to write new Worker Table.")
-        worker_t = GCS.put(worker_t, WORKER_TABLE_NAME)
+        self.__write_wt_wrapper(worker_t)
         logging.info("New Worker Table updated to GCS.")
 
     def select_worker(self, worker_t: WorkerTable) -> str:
@@ -139,7 +153,7 @@ class GlobalScheduler:
                 logging.info("Start to resubmit task.")
                 # fetch worker table
                 logging.info("Start to pull worker table.")
-                worker_t = GCS.get(WORKER_TABLE_NAME)
+                worker_t = GCS.get(WORKER_TABLE_NAME) if not self.wt_cache else self.wt_cache
                 logging.info("Worker Table pulled.")
                 worker = self.select_worker(worker_t)
                 if not worker:
@@ -156,11 +170,11 @@ class GlobalScheduler:
                 logging.error(
                     "Submit task failed, error: {}. Worker {} failed, start to delete it.".format(e, worker))
                 worker_t.del_worker(worker)
-                GCS.put(worker_t, WORKER_TABLE_NAME)
+                self.__write_wt_wrapper(worker_t)
                 logging.info("New Worker Table updated.")
         worker_t.set_worker_task(worker, res_id, func_id, params_id)
         logging.info("Start to update Worker Table.")
-        GCS.put(worker_t, WORKER_TABLE_NAME)
+        self.__write_wt_wrapper(worker_t)
         logging.info("Worker Table updated.")
         logging.info("Task submitted.")
         return
@@ -181,7 +195,7 @@ class GlobalScheduler:
         logging.info("Start to submit task.")
         # fetch worker table
         logging.info("Start to pull worker table.")
-        worker_t = GCS.get(WORKER_TABLE_NAME)
+        worker_t = GCS.get(WORKER_TABLE_NAME) if not self.wt_cache else self.wt_cache
         logging.info("Worker Table pulled.")
         worker = self.select_worker(worker_t)
         if not worker:
@@ -198,7 +212,7 @@ class GlobalScheduler:
             return "ERROR"
         worker_t.set_worker_task(worker, res_id, func_id, params_id)
         logging.info("Start to update Worker Table.")
-        GCS.put(worker_t, WORKER_TABLE_NAME)
+        self.__write_wt_wrapper(worker_t)
         logging.info("Worker Table updated.")
         logging.info("Task submitted.")
         return res_id

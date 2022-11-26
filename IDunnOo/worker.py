@@ -24,6 +24,7 @@ class Worker:
         worker_port: The port num of worker.
         rpc_server: The server to provied worker service, implemented by zerorpc.
         fd: The failure detector used to monitor if worker is alive.
+        cache: Used to cache the fetched object for efficiency.
     """
 
     def __init__(self, worker_port: int) -> None:
@@ -39,6 +40,7 @@ class Worker:
         self.rpc_server = zerorpc.Server(self)
         self.rpc_server.bind("tcp://0.0.0.0:{}".format(self.port))
         self.fd = FDServer()
+        self.cache = {}
 
     def recv_task(self, func_id: str, param_ids: list, t_id: str = None) -> str:
         """Receive the task, start a thread to execute the task and return the result object id.
@@ -68,24 +70,37 @@ class Worker:
             None
         """
         # get function
-        logging.info("Start to fetch func object from GCS.")
         func = None
-        while not func:
-            func = GCS.get(func_id)
-        logging.info("Func object fetched.")
+        if func_id not in self.cache:
+            logging.info("Func has not been cached, start to fetch func object from GCS.") 
+            while not func:
+                func = GCS.get(func_id)
+            logging.info("Func object fetched.")
+            self.cache[func_id] = func
+            logging.info("Func has been cached successfully.")
+        else:
+            logging.info("Find func from cache.") 
+            func = self.cache[func_id]
+
         # get parameters
         logging.info("Start to fetch params objects from GCS.")
         params = []
         for i, param_id in enumerate(param_ids):
             param = None
-            while not param:
-                logging.info("Start to fetch {} param object".format(i))
-                param = GCS.get(param_id)
-                logging.info("{} param object fetched".format(i))
-                params.append(param)
-        logging.info("All params have been fetched.")
+            if param_id not in self.cache:
+                logging.info("Param {} has not been cached, start to fetch it.".format(i))
+                while not param:
+                    param = GCS.get(param_id)
+                logging.info("The {} param object fetched".format(i))
+                self.cache[param_id] = param
+                logging.info("Param {} has been cached successfully.".format(i))
+            else:
+                logging.info("Find param {} from cache.".format(i))
+                param = self.cache[param_id]
+            params.append(param)
+
+        logging.info("All params have been loaded, start to execute function.")
         # execute function
-        logging.info("Exectue function.")
         res = func(params)
         # write result to GCS
         logging.info("Finish executing func. Start to store result to GCS.")
