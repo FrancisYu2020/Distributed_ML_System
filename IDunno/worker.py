@@ -6,6 +6,7 @@ from fd import Server as FDServer
 from sdfs_shell import SDFShell
 from threading import Thread
 import DNN
+import pickle
 
 
 class Worker:
@@ -52,6 +53,7 @@ class Worker:
             c.commit_task(task_id, self.name, res)
 
     def exec_task(self, model, data):
+        data = pickle.loads(data)
         model.load_data(data)
         return model.predict(data)
 

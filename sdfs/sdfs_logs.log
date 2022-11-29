@@ -1,0 +1,34 @@
+2022-11-29,17:07:53.898 INFO {data_node} [run_data_node] DataNode Start
+2022-11-29,17:07:53.922 INFO {name_node} [safe_checker] Safe Checker start
+2022-11-29,17:07:53.922 INFO {name_node} [initial_mode] Initial Namenode...
+2022-11-29,17:07:53.922 INFO {name_node} [initial_mode] Cur Files: 
+2022-11-29,17:07:53.922 INFO {name_node} [initial_mode] Finsih Initial Namenode.
+2022-11-29,17:07:53.922 INFO {name_node} [run] NameNode Start
+2022-11-29,17:07:53.924 INFO {name_node} [run] Consumer Start
+2022-11-29,17:07:53.939 INFO {name_node} [producer] Producer start.
+2022-11-29,17:31:32.408 INFO {name_node} [run] Receive put request: f4e9d7c0703d11ed957e0050568d0915
+2022-11-29,17:31:32.684 INFO {name_node} [run] Receive put request: f526351c703d11ed957e0050568d0915
+2022-11-29,17:32:45.158 INFO {name_node} [run] Receive put request: 20536d4a703e11edb2c30050568d0915
+2022-11-29,17:32:45.409 INFO {name_node} [run] Receive put request: 2080fd00703e11edb2c30050568d0915
+2022-11-29,17:33:00.976 INFO {name_node} [run] Receive put request: 29c3244c703e11edab2b0050568d0915
+2022-11-29,17:33:01.248 INFO {name_node} [run] Receive put request: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.384 INFO {data_node} [forward] Try to forward
+2022-11-29,17:33:01.384 INFO {data_node} [forward] Forward end
+2022-11-29,17:33:01.384 INFO {data_node} [forward_file] Try to put file: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.385 INFO {data_node} [forward_file] Put file end: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.385 INFO {data_node} [forward_file] Put file 29f1d30a703e11edab2b0050568d0915,v1, current version is 1
+2022-11-29,17:33:01.496 INFO {data_node} [forward] Try to forward
+2022-11-29,17:33:01.496 INFO {data_node} [forward] Forward end
+2022-11-29,17:33:01.531 INFO {data_node} [forward_file] Try to put file: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.531 INFO {data_node} [forward_file] Put file end: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.531 INFO {data_node} [forward_file] Put file 29f1d30a703e11edab2b0050568d0915,v2, current version is 2
+2022-11-29,17:33:01.687 INFO {data_node} [forward] Try to forward
+2022-11-29,17:33:01.687 INFO {data_node} [forward] Forward end
+2022-11-29,17:33:01.687 INFO {data_node} [forward_file] Try to put file: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.687 INFO {data_node} [forward_file] Put file end: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.687 INFO {data_node} [forward_file] Put file 29f1d30a703e11edab2b0050568d0915,v3, current version is 3
+2022-11-29,17:33:01.771 INFO {data_node} [forward] Try to forward
+2022-11-29,17:33:01.771 INFO {data_node} [forward] Forward end
+2022-11-29,17:33:01.771 INFO {data_node} [forward_file] Try to put file: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.771 INFO {data_node} [forward_file] Put file end: 29f1d30a703e11edab2b0050568d0915
+2022-11-29,17:33:01.771 INFO {data_node} [forward_file] Put file 29f1d30a703e11edab2b0050568d0915,v4, current version is 4

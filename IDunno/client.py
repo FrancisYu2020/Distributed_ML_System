@@ -6,15 +6,17 @@ import random
 import collections
 from DNN import *
 # from torchvision.io import read_image
+import pickle
 
 def import_data(filelist, start, end):
     # 0-index
     img_list = [read_image(filelist[img_idx]) for img_idx in range(start, end)]
-    return img_list
+    return pickle.dumps(img_list)
 
 if __name__ == "__main__":
     filelist = os.listdir('imageNet/val')
     filelist.sort()
+    filelist = ['imageNet/val/' + f for f in filelist]
     model_id = SDFShell.put('resnet18')
     another_model_id = SDFShell.put('alexnet')
     round_robin_queue = collections.deque()
