@@ -17,4 +17,9 @@ SELF_HOST_NAME = socket.gethostname
 class TestModel:
     def predict(self, params):
         time.sleep(3)
-        return "Predict Test {}".format(params)
+        return "Predict Test {} for TestModel".format(params)
+
+class AnotherModel:
+    def predict(self, params):
+        time.sleep(1.5)
+        return "Predict Test {} for AnotherModel".format(params)
