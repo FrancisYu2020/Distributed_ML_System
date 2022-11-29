@@ -12,6 +12,7 @@ MASTER_PORT = 2333
 FOLLOWER_PORT = 2334
 PING_PORT = [2345 + i for i in range(11)]
 SELF_HOST_NAME = socket.gethostname
+BATCH_SIZE = 16
 
 
 class TestModel:

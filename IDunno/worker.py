@@ -5,6 +5,7 @@ from glob_var import *
 from fd import Server as FDServer
 from sdfs_shell import SDFShell
 from threading import Thread
+import DNN
 
 
 class Worker:
@@ -37,10 +38,11 @@ class Worker:
             while not task_params:
                 task_params = c.poll_task(self.name)
                 self.__wait()
-        task_id, model_id, params = task_params
+        task_id, model_id, data = task_params
         if model_id not in self.cache:
-            self.cache[model_id] = SDFShell.get(model_id)
-        res = self.exec_task(self.cache[model_id], params)
+            self.cache[model_id] = Model(model_id)
+        # params: data or other parameters
+        res = self.exec_task(self.cache[model_id], data)
 
         try:
             c.commit_task(task_id, self.name, res)
@@ -49,8 +51,9 @@ class Worker:
             c = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
             c.commit_task(task_id, self.name, res)
 
-    def exec_task(self, model, params):
-        return model.predict(params)
+    def exec_task(self, model, data):
+        model.load_data(data)
+        return model.predict(data)
 
     def run(self):
         while True:
