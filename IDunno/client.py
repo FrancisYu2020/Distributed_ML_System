@@ -20,15 +20,15 @@ if __name__ == "__main__":
         round_robin_queue.append(model)
         try:
             while True:
-                if c.submit_task(task_id, model_id, random.random()):
-                    print(f'Submit task {task_id} successful.')
+                if c.submit_task(task_id, model, random.random()):
+                    print(f'Submit task {task_id} for {model} successful.')
                     break
                 time.sleep(0.2)
         except:
             c = zerorpc.Client(
                 f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
             while True:
-                if c.submit_task(task_id, model_id, random.random()):
-                    print(f'Submit task {task_id} successful.')
+                if c.submit_task(task_id, model, random.random()):
+                    print(f'Submit task {task_id} for {model} successful.')
                     break
                 time.sleep(0.2)
