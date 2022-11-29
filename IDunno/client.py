@@ -10,8 +10,8 @@ if __name__ == "__main__":
     model_id = SDFShell.put(TestModel())
     another_model_id = SDFShell.put(AnotherModel())
     round_robin_queue = collections.deque()
-    round_robin_queue.append[model_id]
-    round_robin_queue.append[another_model_id]
+    round_robin_queue.append(model_id)
+    round_robin_queue.append(another_model_id)
 
     c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
     for i in range(100):
