@@ -25,49 +25,44 @@ class Server:
         # self.neighbor_timestamps = {} # dict of key = hostname, value = [isInRing, timestamp], only used in master node to record a node status
 
     def update(self):
-        for host in self.ML:
-            # broadcast the updated ML to every node marked in the ring
-            s1 = socket.socket()
-            s1.connect((host, FOLLOWER_PORT))
-            s1.send(json.dumps(self.ML).encode())
-            s1.close()
-            print("successfully send ML: ", self.ML)
+        # for host in self.ML:
+        #     # broadcast the updated ML to every node marked in the ring
+        #     s1 = socket.socket()
+        #     s1.connect((host, FOLLOWER_PORT))
+        #     s1.send(json.dumps(self.ML).encode())
+        #     s1.close()
+        #     print("successfully send ML: ", self.ML)
+        pass
 
     def fail_notice(self, worker):
         # heartbeat to check if main GS survive
+        c = zerorpc.Client(
+            "tcp://{}:{}".format(COORDINATOR_HOST, COORDINATOR_PORT))
         while True:
             try:
-                host = GLOBAL_SCHEDULER_HOST
-                try:    # main GS survive
-                    heartbeat_c = zerorpc.Client(
-                        "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
-                    heartbeat_c.heartbeat()
-                    heartbeat_c.close()
-                except:  # use hot standby GS
-                    host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
-
-                c = zerorpc.Client(
-                    "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
-                c.handle_fail_worker(worker)
+                c.failure_handle(worker)
                 break
-            except:
+            except Exception as e:
+                print(e)
+                c = zerorpc.Client(
+                    "tcp://{}:{}".format(HOT_STANDBY_COORDINATOR_HOST, COORDINATOR_PORT))
                 continue
         return
 
     def join_notice(self, worker):
         # heartbeat to check if main GS survive
-        host = GLOBAL_SCHEDULER_HOST
-        try:    # main GS survive
-            heartbeat_c = zerorpc.Client(
-                "tcp://{}:{}".format(GLOBAL_SCHEDULER_HOST, GLOBAL_SCHEDULER_PORT), timeout=2)
-            heartbeat_c.heartbeat()
-            heartbeat_c.close()
-        except:  # use hot standby GS
-            host = HOT_STANDBY_GLOBAL_SCHEDULER_HOST
-
         c = zerorpc.Client(
-            "tcp://{}:{}".format(host, GLOBAL_SCHEDULER_PORT))
-        c.add_worker(worker)
+            "tcp://{}:{}".format(COORDINATOR_HOST, COORDINATOR_PORT))
+        while True:
+            try:
+                c.add_worker(worker)
+                break
+            except Exception as e:
+                print(e)
+                c = zerorpc.Client(
+                    "tcp://{}:{}".format(HOT_STANDBY_COORDINATOR_HOST, COORDINATOR_PORT))
+                continue
+        return
 
     def fail(self, host):
         # node leave, do nothing but send a leave request ["leave", host] to master
