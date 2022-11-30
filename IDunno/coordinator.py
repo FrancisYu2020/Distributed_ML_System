@@ -2,7 +2,7 @@ import zerorpc
 import socket
 from glob_var import *
 from collections import deque
-
+import pickle
 
 class Coordinator:
     def __init__(self):
@@ -56,6 +56,7 @@ class Coordinator:
         return (task_id, model_id, params)
 
     def commit_task(self, task_id, worker, res):
+        res = pickle.loads(res)
         print(f'The Result of taks {task_id} is: {res}')
         self.worker_states[worker] = None
 

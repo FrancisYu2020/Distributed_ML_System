@@ -10,6 +10,7 @@ import os
 import numpy as np
 from tqdm import tqdm
 import time
+from glob_var import *
 
 # class ImageNet(Dataset):
 #     def __init__(self, start=0, end=50000, transform=None):
@@ -47,23 +48,43 @@ import time
 #         # exit(1)
 #         return img, self.labels[idx]
 
+# class ImageNet(Dataset):
+#     def __init__(self, data, labels, transform=None):
+#         self.database = data
+#         self.labels = labels
+#         # self.transform = transform if transform else Resize((112, 112))
+#         self.transform = transform if transform else Compose([Resize((224, 224)), Normalize([0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
+#         self.to_RGB = Lambda(lambda x: x.repeat(3, 1, 1))
+
+#     def __len__(self):
+#         return self.labels.size(0)
+    
+#     def __getitem__(self, idx):
+#         img = self.database[idx]
+#         if img.size(0) == 1:
+#             img = self.to_RGB(img)
+#         img = self.transform(img.float())
+#         return img, self.labels[idx]
+
 class ImageNet(Dataset):
-    def __init__(self, data, labels, transform=None):
+    def __init__(self, data, transform=None):
         self.database = data
-        self.labels = labels
+        print(self.database)
         # self.transform = transform if transform else Resize((112, 112))
         self.transform = transform if transform else Compose([Resize((224, 224)), Normalize([0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
         self.to_RGB = Lambda(lambda x: x.repeat(3, 1, 1))
 
     def __len__(self):
-        return self.labels.size(0)
+        return len(self.database)
     
     def __getitem__(self, idx):
         img = self.database[idx]
+        print(img)
+        print(type(img))
         if img.size(0) == 1:
             img = self.to_RGB(img)
         img = self.transform(img.float())
-        return img, self.labels[idx]
+        return img
 
 class Model(nn.Module):
     def __init__(self, nn_name):
@@ -72,15 +93,17 @@ class Model(nn.Module):
         self.testdata = None
         self.testloader = None
     
-    def load_data(self, data, labels):
-        self.testdata = ImageNet(data, labels)
-        self.testloader = DataLoader(self.testdata, batch_size=BATCH_SIZE, worker_num=4, shuffle=True)
+    def load_data(self, data):
+        self.testdata = ImageNet(data)
+        self.testloader = DataLoader(self.testdata, batch_size=BATCH_SIZE, shuffle=True)
+        # print(self.testloader)
 
     def load_pretrained(self, nn_name):
         '''
         emulate training stage, instead of doing the actual training,
         we load the pretrained model directly and use eval() to disable autograd
         '''
+        
         if nn_name == "resnet18":
             model = resnet18(pretrained=True)
         elif nn_name == "alexnet":
@@ -91,7 +114,7 @@ class Model(nn.Module):
         print("training stage finished, ready to do inference!")
         return model
     
-    def get_accuracy(self, pred_batches, label_batches):
+    def get_accuracy(self, pred_batches):
         # print(pred_batches[0, 488:492], pred_batches[0].max(), pred_batches[0].argmax())
         # print(label_batches.argmax(dim=1))
         # print(pred_batches[:5, :5])
@@ -101,9 +124,9 @@ class Model(nn.Module):
         # print(pred_label.size())
         # TP = (pred_label * label_batches).sum()
         pred_label = pred_batches.argmax(dim=1)
-        return pred_label, pred_label.size(0)
+        return pred_label
     
-    def predict(self, dataloader):
+    def predict(self):
         '''
         input: a dataloader that load assigned data in batches
         return: the accuracy in this portion together with the number of assigned data in this task
@@ -112,9 +135,11 @@ class Model(nn.Module):
         pred_batches = []
         label_batches = []
         with torch.no_grad():
-            for data, label in tqdm(dataloader):
+            # print(dataloader)
+            for data in tqdm(self.testloader):
                 pred = self.model(data)
                 counter += pred.size(0)
                 pred_batches.append(pred)
-                label_batches.append(label)
-        return self.get_accuracy(torch.cat(pred_batches, dim=0), torch.cat(label_batches, dim=0))
+                # label_batches.append(label)
+        return self.get_accuracy(torch.cat(pred_batches, dim=0))
+        # return self.get_accuracy(torch.cat(pred_batches, dim=0), torch.cat(label_batches, dim=0))

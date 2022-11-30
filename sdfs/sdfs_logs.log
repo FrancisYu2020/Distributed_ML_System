@@ -32,3 +32,166 @@
 2022-11-29,17:33:01.771 INFO {data_node} [forward_file] Try to put file: 29f1d30a703e11edab2b0050568d0915
 2022-11-29,17:33:01.771 INFO {data_node} [forward_file] Put file end: 29f1d30a703e11edab2b0050568d0915
 2022-11-29,17:33:01.771 INFO {data_node} [forward_file] Put file 29f1d30a703e11edab2b0050568d0915,v4, current version is 4
+2022-11-29,17:41:01.453 INFO {name_node} [run] Receive put request: 481dfb64703f11edaa110050568d0915
+2022-11-29,17:41:01.700 INFO {name_node} [run] Receive put request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:46:51.543 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:49:46.018 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:50:04.497 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:50:19.714 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:50:44.586 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:51:15.146 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:52:09.527 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:52:47.370 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:53:32.865 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:53:41.283 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:53:57.391 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:54:53.652 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:55:45.028 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:55:45.095 ERROR {gevent_zmq} [recv] /!\ gevent_zeromq BUG /!\ catching up after missing event (RECV) /!\
+2022-11-29,17:57:24.814 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:59:09.007 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,17:59:23.859 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,18:00:07.075 INFO {name_node} [run] Receive get request: 4850da7a703f11edaa110050568d0915
+2022-11-29,18:00:08.842 INFO {name_node} [run] Receive get request: 481dfb64703f11edaa110050568d0915
+2022-11-29,18:01:52.737 INFO {name_node} [run] Receive put request: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:52.871 INFO {data_node} [forward] Try to forward
+2022-11-29,18:01:52.871 INFO {data_node} [forward] Forward end
+2022-11-29,18:01:52.883 INFO {data_node} [forward_file] Try to put file: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:52.884 INFO {data_node} [forward_file] Put file end: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:52.884 INFO {data_node} [forward_file] Put file 31fc4dce704211ed83260050568d0915,v1, current version is 1
+2022-11-29,18:01:52.962 INFO {data_node} [forward] Try to forward
+2022-11-29,18:01:52.962 INFO {data_node} [forward] Forward end
+2022-11-29,18:01:52.962 INFO {data_node} [forward_file] Try to put file: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:52.963 INFO {data_node} [forward_file] Put file end: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:52.963 INFO {data_node} [forward_file] Put file 31fc4dce704211ed83260050568d0915,v2, current version is 2
+2022-11-29,18:01:53.038 INFO {data_node} [forward] Try to forward
+2022-11-29,18:01:53.038 INFO {data_node} [forward] Forward end
+2022-11-29,18:01:53.038 INFO {data_node} [forward_file] Try to put file: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:53.039 INFO {data_node} [forward_file] Put file end: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:53.039 INFO {data_node} [forward_file] Put file 31fc4dce704211ed83260050568d0915,v3, current version is 3
+2022-11-29,18:01:53.169 INFO {data_node} [forward] Try to forward
+2022-11-29,18:01:53.169 INFO {data_node} [forward] Forward end
+2022-11-29,18:01:53.169 INFO {data_node} [forward_file] Try to put file: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:53.169 INFO {data_node} [forward_file] Put file end: 31fc4dce704211ed83260050568d0915
+2022-11-29,18:01:53.170 INFO {data_node} [forward_file] Put file 31fc4dce704211ed83260050568d0915,v4, current version is 4
+2022-11-29,18:01:53.279 INFO {name_node} [run] Receive put request: 32443314704211ed83260050568d0915
+2022-11-29,18:04:41.630 INFO {name_node} [run] Receive put request: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:41.745 INFO {data_node} [forward] Try to forward
+2022-11-29,18:04:41.745 INFO {data_node} [forward] Forward end
+2022-11-29,18:04:41.756 INFO {data_node} [forward_file] Try to put file: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:41.756 INFO {data_node} [forward_file] Put file end: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:41.756 INFO {data_node} [forward_file] Put file 96a214b6704211edb6250050568d0915,v1, current version is 1
+2022-11-29,18:04:41.860 INFO {data_node} [forward] Try to forward
+2022-11-29,18:04:41.860 INFO {data_node} [forward] Forward end
+2022-11-29,18:04:41.871 INFO {data_node} [forward_file] Try to put file: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:41.871 INFO {data_node} [forward_file] Put file end: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:41.871 INFO {data_node} [forward_file] Put file 96a214b6704211edb6250050568d0915,v2, current version is 2
+2022-11-29,18:04:41.931 INFO {data_node} [forward] Try to forward
+2022-11-29,18:04:41.931 INFO {data_node} [forward] Forward end
+2022-11-29,18:04:41.932 INFO {data_node} [forward_file] Try to put file: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:41.932 INFO {data_node} [forward_file] Put file end: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:41.932 INFO {data_node} [forward_file] Put file 96a214b6704211edb6250050568d0915,v3, current version is 3
+2022-11-29,18:04:42.015 INFO {data_node} [forward] Try to forward
+2022-11-29,18:04:42.015 INFO {data_node} [forward] Forward end
+2022-11-29,18:04:42.015 INFO {data_node} [forward_file] Try to put file: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:42.015 INFO {data_node} [forward_file] Put file end: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:42.015 INFO {data_node} [forward_file] Put file 96a214b6704211edb6250050568d0915,v4, current version is 4
+2022-11-29,18:04:42.039 INFO {name_node} [run] Receive put request: 96e633c6704211edb6250050568d0915
+2022-11-29,18:04:43.072 INFO {name_node} [run] Receive get request: 96a214b6704211edb6250050568d0915
+2022-11-29,18:04:43.121 INFO {data_node} [get_file] Get file 96a214b6704211edb6250050568d0915, current version is 4
+2022-11-29,18:04:44.777 INFO {name_node} [run] Receive get request: 96e633c6704211edb6250050568d0915
+2022-11-29,18:06:51.283 WARNING {name_node} [safe_checker] Safe Checker: File f4e9d7c0703d11ed957e0050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.283 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for f4e9d7c0703d11ed957e0050568d0915
+2022-11-29,18:06:51.298 INFO {data_node} [rreplica] Rereplica file f4e9d7c0703d11ed957e0050568d0915 to []
+2022-11-29,18:06:51.301 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.301 WARNING {name_node} [safe_checker] Safe Checker: File f526351c703d11ed957e0050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.301 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for f526351c703d11ed957e0050568d0915
+2022-11-29,18:06:51.313 INFO {data_node} [rreplica] Rereplica file f526351c703d11ed957e0050568d0915 to []
+2022-11-29,18:06:51.314 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.314 WARNING {name_node} [safe_checker] Safe Checker: File 20536d4a703e11edb2c30050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.314 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 20536d4a703e11edb2c30050568d0915
+2022-11-29,18:06:51.319 INFO {data_node} [rreplica] Rereplica file 20536d4a703e11edb2c30050568d0915 to []
+2022-11-29,18:06:51.320 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.320 WARNING {name_node} [safe_checker] Safe Checker: File 2080fd00703e11edb2c30050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.320 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 2080fd00703e11edb2c30050568d0915
+2022-11-29,18:06:51.333 INFO {data_node} [rreplica] Rereplica file 2080fd00703e11edb2c30050568d0915 to []
+2022-11-29,18:06:51.333 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.333 WARNING {name_node} [safe_checker] Safe Checker: File 29c3244c703e11edab2b0050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.333 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 29c3244c703e11edab2b0050568d0915
+2022-11-29,18:06:51.346 INFO {data_node} [rreplica] Rereplica file 29c3244c703e11edab2b0050568d0915 to []
+2022-11-29,18:06:51.347 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.347 WARNING {name_node} [safe_checker] Safe Checker: File 29f1d30a703e11edab2b0050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.347 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 29f1d30a703e11edab2b0050568d0915
+2022-11-29,18:06:51.349 INFO {data_node} [rreplica] Rereplica file 29f1d30a703e11edab2b0050568d0915 to []
+2022-11-29,18:06:51.350 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.350 WARNING {name_node} [safe_checker] Safe Checker: File 481dfb64703f11edaa110050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.350 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 481dfb64703f11edaa110050568d0915
+2022-11-29,18:06:51.353 INFO {data_node} [rreplica] Rereplica file 481dfb64703f11edaa110050568d0915 to []
+2022-11-29,18:06:51.354 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.354 WARNING {name_node} [safe_checker] Safe Checker: File 4850da7a703f11edaa110050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.354 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 4850da7a703f11edaa110050568d0915
+2022-11-29,18:06:51.379 INFO {data_node} [rreplica] Rereplica file 4850da7a703f11edaa110050568d0915 to []
+2022-11-29,18:06:51.380 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.380 WARNING {name_node} [safe_checker] Safe Checker: File 31fc4dce704211ed83260050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.380 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 31fc4dce704211ed83260050568d0915
+2022-11-29,18:06:51.393 INFO {data_node} [rreplica] Rereplica file 31fc4dce704211ed83260050568d0915 to []
+2022-11-29,18:06:51.394 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.394 WARNING {name_node} [safe_checker] Safe Checker: File 32443314704211ed83260050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.394 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 32443314704211ed83260050568d0915
+2022-11-29,18:06:51.436 INFO {data_node} [rreplica] Rereplica file 32443314704211ed83260050568d0915 to []
+2022-11-29,18:06:51.460 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.460 WARNING {name_node} [safe_checker] Safe Checker: File 96a214b6704211edb6250050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.461 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 96a214b6704211edb6250050568d0915
+2022-11-29,18:06:51.463 INFO {data_node} [rreplica] Rereplica file 96a214b6704211edb6250050568d0915 to []
+2022-11-29,18:06:51.464 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:51.464 WARNING {name_node} [safe_checker] Safe Checker: File 96e633c6704211edb6250050568d0915 lack 1 replica(s).
+2022-11-29,18:06:51.464 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 96e633c6704211edb6250050568d0915
+2022-11-29,18:06:51.490 INFO {data_node} [rreplica] Rereplica file 96e633c6704211edb6250050568d0915 to []
+2022-11-29,18:06:51.502 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.544 WARNING {name_node} [safe_checker] Safe Checker: File f4e9d7c0703d11ed957e0050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.544 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for f4e9d7c0703d11ed957e0050568d0915
+2022-11-29,18:06:52.578 INFO {data_node} [rreplica] Rereplica file f4e9d7c0703d11ed957e0050568d0915 to []
+2022-11-29,18:06:52.589 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.590 WARNING {name_node} [safe_checker] Safe Checker: File f526351c703d11ed957e0050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.590 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for f526351c703d11ed957e0050568d0915
+2022-11-29,18:06:52.602 INFO {data_node} [rreplica] Rereplica file f526351c703d11ed957e0050568d0915 to []
+2022-11-29,18:06:52.603 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.603 WARNING {name_node} [safe_checker] Safe Checker: File 20536d4a703e11edb2c30050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.603 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 20536d4a703e11edb2c30050568d0915
+2022-11-29,18:06:52.626 INFO {data_node} [rreplica] Rereplica file 20536d4a703e11edb2c30050568d0915 to []
+2022-11-29,18:06:52.627 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.627 WARNING {name_node} [safe_checker] Safe Checker: File 2080fd00703e11edb2c30050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.627 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 2080fd00703e11edb2c30050568d0915
+2022-11-29,18:06:52.649 INFO {data_node} [rreplica] Rereplica file 2080fd00703e11edb2c30050568d0915 to []
+2022-11-29,18:06:52.650 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.650 WARNING {name_node} [safe_checker] Safe Checker: File 29c3244c703e11edab2b0050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.650 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 29c3244c703e11edab2b0050568d0915
+2022-11-29,18:06:52.661 INFO {data_node} [rreplica] Rereplica file 29c3244c703e11edab2b0050568d0915 to []
+2022-11-29,18:06:52.662 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.662 WARNING {name_node} [safe_checker] Safe Checker: File 29f1d30a703e11edab2b0050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.662 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 29f1d30a703e11edab2b0050568d0915
+2022-11-29,18:06:52.791 INFO {data_node} [rreplica] Rereplica file 29f1d30a703e11edab2b0050568d0915 to []
+2022-11-29,18:06:52.805 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.805 WARNING {name_node} [safe_checker] Safe Checker: File 481dfb64703f11edaa110050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.805 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 481dfb64703f11edaa110050568d0915
+2022-11-29,18:06:52.849 INFO {data_node} [rreplica] Rereplica file 481dfb64703f11edaa110050568d0915 to []
+2022-11-29,18:06:52.871 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.871 WARNING {name_node} [safe_checker] Safe Checker: File 4850da7a703f11edaa110050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.872 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 4850da7a703f11edaa110050568d0915
+2022-11-29,18:06:52.874 INFO {data_node} [rreplica] Rereplica file 4850da7a703f11edaa110050568d0915 to []
+2022-11-29,18:06:52.875 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.875 WARNING {name_node} [safe_checker] Safe Checker: File 31fc4dce704211ed83260050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.875 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 31fc4dce704211ed83260050568d0915
+2022-11-29,18:06:52.881 INFO {data_node} [rreplica] Rereplica file 31fc4dce704211ed83260050568d0915 to []
+2022-11-29,18:06:52.898 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.899 WARNING {name_node} [safe_checker] Safe Checker: File 32443314704211ed83260050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.899 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 32443314704211ed83260050568d0915
+2022-11-29,18:06:52.911 INFO {data_node} [rreplica] Rereplica file 32443314704211ed83260050568d0915 to []
+2022-11-29,18:06:52.911 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.911 WARNING {name_node} [safe_checker] Safe Checker: File 96a214b6704211edb6250050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.912 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 96a214b6704211edb6250050568d0915
+2022-11-29,18:06:52.921 INFO {data_node} [rreplica] Rereplica file 96a214b6704211edb6250050568d0915 to []
+2022-11-29,18:06:52.922 WARNING {name_node} [rreplica] Safe Checker: Finish! New replica contains []
+2022-11-29,18:06:52.922 WARNING {name_node} [safe_checker] Safe Checker: File 96e633c6704211edb6250050568d0915 lack 1 replica(s).
+2022-11-29,18:06:52.922 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for 96e633c6704211edb6250050568d0915
+2022-11-29,18:06:52.945 INFO {data_node} [rreplica] Rereplica file 96e633c6704211edb6250050568d0915 to []

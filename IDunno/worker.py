@@ -5,9 +5,8 @@ from glob_var import *
 from fd import Server as FDServer
 from sdfs_shell import SDFShell
 from threading import Thread
-import DNN
+from DNN import *
 import pickle
-
 
 class Worker:
     def __init__(self):
@@ -41,9 +40,11 @@ class Worker:
                 self.__wait()
         task_id, model_id, data = task_params
         if model_id not in self.cache:
-            self.cache[model_id] = Model(model_id)
+            model_name = SDFShell.get(model_id)
+            self.cache[model_id] = Model(model_name)
         # params: data or other parameters
         res = self.exec_task(self.cache[model_id], data)
+        res = pickle.dumps(res)
 
         try:
             c.commit_task(task_id, self.name, res)
@@ -55,7 +56,7 @@ class Worker:
     def exec_task(self, model, data):
         data = pickle.loads(data)
         model.load_data(data)
-        return model.predict(data)
+        return model.predict()
 
     def run(self):
         while True:
