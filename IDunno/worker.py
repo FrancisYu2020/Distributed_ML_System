@@ -8,6 +8,7 @@ from threading import Thread
 from DNN import *
 import pickle
 
+
 class Worker:
     def __init__(self):
         self.cache = {}
@@ -15,16 +16,18 @@ class Worker:
         self.fd = FDServer()
         self.host = COORDINATOR_HOST
 
-    def debug(func):
+    def log(func):
         def deco_func(*args, **kwargs):
-            print(f'Enter function: {func.__name__}.')
-            func(*args, **kwargs)
-            print(f'Enter function: {func.__name__}.')
+            logging.info(f'Enter func: {func.__name__}.')
+            ret = func(*args, **kwargs)
+            logging.info(f'Exit func: {func.__name__}.')
+            return ret
         return deco_func
 
     def __wait(self):
         time.sleep(0.25)
 
+    @log
     def get_task(self):
         task_params = None
         try:
@@ -39,6 +42,7 @@ class Worker:
                 task_params = c.poll_task(self.name)
                 self.__wait()
         task_id, model_id, data = task_params
+        logging.info(f'Get {model_id} query task {task_id}.')
         if model_id not in self.cache:
             model_name = SDFShell.get(model_id)
             self.cache[model_id] = Model(model_name)
@@ -47,12 +51,14 @@ class Worker:
         res = pickle.dumps(res)
 
         try:
-            c.commit_task(task_id, self.name, res)
+            c.commit_task(model_id, task_id, self.name, res)
         except:
             self.host = HOT_STANDBY_COORDINATOR_HOST
             c = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
-            c.commit_task(task_id, self.name, res)
+            c.commit_task(model_id, task_id, self.name, res)
+        logging.info(f'Commit {model_id} query task {task_id}.')
 
+    @log
     def exec_task(self, model, data):
         data = pickle.loads(data)
         model.load_data(data)
