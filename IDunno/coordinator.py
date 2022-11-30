@@ -61,8 +61,8 @@ class Coordinator:
         return (task_id, model_id, params)
 
     @log
-    def commit_task(self, model_id, task_id, worker, res):
-        res = pickle.loads(res)
+    def commit_task(self, model_id, task_id, worker, bytes_res):
+        res = pickle.loads(bytes_res)
         print(f'The Result of taks {task_id} is: {res}')
         self.worker_states[worker] = None
         if task_id not in self.results[model_id]:
@@ -73,7 +73,7 @@ class Coordinator:
         if self.hostname == COORDINATOR_HOST:
             c = zerorpc.Client(
                 f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            c.commit_task(model_id, task_id, worker, res)
+            c.commit_task(model_id, task_id, worker, bytes_res)
         return
 
     @log
