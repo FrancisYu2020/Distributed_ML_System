@@ -65,7 +65,7 @@ class Coordinator:
         res = pickle.loads(res)
         print(f'The Result of taks {task_id} is: {res}')
         self.worker_states[worker] = None
-        if not self.results[model_id][task_id]:
+        if task_id not in self.results[model_id]:
             self.dash[model_id] += 1
             self.results[model_id][task_id] = res
 
