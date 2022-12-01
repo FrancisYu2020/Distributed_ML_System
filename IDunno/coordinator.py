@@ -90,9 +90,8 @@ class Coordinator:
     @log
     def add_worker(self, worker):
         self.max_q_size += 1
-        if worker not in self.worker_states:
-            logging.info(f'New worker {worker} added.')
-            self.worker_states[worker] = None
+        logging.info(f'New worker {worker} added.')
+        self.worker_states[worker] = None
 
         if self.hostname == COORDINATOR_HOST:
             self.sync_c.add_worker(worker)
