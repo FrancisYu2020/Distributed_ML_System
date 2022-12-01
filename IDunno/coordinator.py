@@ -13,6 +13,8 @@ class Coordinator:
         self.hostname = socket.gethostname()
         self.results = defaultdict(dict)
         self.dash = defaultdict(int)
+        self.sync_c = zerorpc.Client(
+            f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
 
     def log(func):
         def deco_func(*args, **kwargs):
@@ -28,9 +30,7 @@ class Coordinator:
         logging.info(f'Get {model_id} query.')
         self.task_q.append((task_id, model_id, params))
         if self.hostname == COORDINATOR_HOST:
-            c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            c.submit_task(task_id, model_id, params)
+            self.sync_c.submit_task(task_id, model_id, params)
         return True
 
     @log
@@ -38,9 +38,7 @@ class Coordinator:
         self.task_q.appendleft((task_id, model_id, params))
         logging.info(f'Resubmit failed {model_id} query task {task_id}.')
         if self.hostname == COORDINATOR_HOST:
-            c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            c.resubmit_fail_task(task_id, model_id, params)
+            self.sync_c.resubmit_fail_task(task_id, model_id, params)
         return
 
     def poll_task(self, worker):
@@ -55,9 +53,7 @@ class Coordinator:
             return None
         logging.info(f'Worker {worker} get {model_id} query task {task_id}.')
         if self.hostname == COORDINATOR_HOST:
-            c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            c.poll_task(worker)
+            self.sync_c.poll_task(worker)
         return (task_id, model_id, params)
 
     @log
@@ -71,9 +67,7 @@ class Coordinator:
 
         logging.info(f'Worker {worker} commit task {task_id}')
         if self.hostname == COORDINATOR_HOST:
-            c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            c.commit_task(model_id, task_id, worker, bytes_res)
+            self.sync_c.commit_task(model_id, task_id, worker, bytes_res)
         return
 
     @log
@@ -85,9 +79,7 @@ class Coordinator:
             self.resubmit_fail_task(task_id, model_id, params)
 
             if self.hostname == COORDINATOR_HOST:
-                c = zerorpc.Client(
-                    f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-                c.failure_handle(worker)
+                self.sync_c.failure_handle(worker)
 
         if worker in self.worker_states:
             self.max_q_size -= 1
@@ -102,9 +94,7 @@ class Coordinator:
             self.worker_states[worker] = None
 
         if self.hostname == COORDINATOR_HOST:
-            c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            c.add_worker(worker)
+            self.sync_c.add_worker(worker)
         return
 
 

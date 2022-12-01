@@ -15,6 +15,7 @@ class Worker:
         self.name = socket.gethostname()
         self.fd = FDServer()
         self.host = COORDINATOR_HOST
+        self.client = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
 
     def log(func):
         def deco_func(*args, **kwargs):
@@ -31,15 +32,14 @@ class Worker:
     def get_task(self):
         task_params = None
         try:
-            c = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
             while not task_params:
-                task_params = c.poll_task(self.name)
+                task_params = self.client.poll_task(self.name)
                 self.__wait()
         except Exception as e:
             self.host = HOT_STANDBY_COORDINATOR_HOST
-            c = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
+            self.client = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
             while not task_params:
-                task_params = c.poll_task(self.name)
+                task_params = self.client.poll_task(self.name)
                 self.__wait()
         task_id, model_id, data = task_params
         logging.info(f'Get {model_id} query task {task_id}.')
@@ -51,11 +51,11 @@ class Worker:
         res = pickle.dumps(res)
 
         try:
-            c.commit_task(model_id, task_id, self.name, res)
+            self.client.commit_task(model_id, task_id, self.name, res)
         except:
             self.host = HOT_STANDBY_COORDINATOR_HOST
-            c = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
-            c.commit_task(model_id, task_id, self.name, res)
+            self.client = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
+            self.client.commit_task(model_id, task_id, self.name, res)
         logging.info(f'Commit {model_id} query task {task_id}.')
 
     @log
