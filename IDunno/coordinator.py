@@ -25,7 +25,7 @@ class Coordinator:
         return deco_func
 
     def submit_task(self, task_id, model_id, params):
-        print(self.task_q)
+        # print(self.task_q)
         if len(self.task_q) >= self.max_q_size:
             return False
         logging.info(f'Get {model_id} query.')
