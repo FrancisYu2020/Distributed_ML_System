@@ -81,8 +81,9 @@ class Coordinator:
 
             if self.hostname == COORDINATOR_HOST:
                 self.sync_c.failure_handle(worker)
-
+        print(f"Failure, previous we have {self.max_q_size} worker")
         self.max_q_size -= 1
+        print(f"Failure, now we have {self.max_q_size} worker")
         del self.worker_states[worker]
         return
 
