@@ -114,19 +114,21 @@ class Client():
                 filelist = self.jobs[job_id].files
                 try:
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_id, self.import_data(filelist, 0, 10)):
+                        if self.rpc_c.submit_task(task_id, job_id, self.import_data(filelist, 0, 5)):
                             # print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
+                            print("Sub failed.")
                             time.sleep(0.2)
                 except Exception as e:
                     print(e)
                     self.rpc_c = zerorpc.Client(
                     f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_id, self.import_data(filelist, 0, 10)):
+                        if self.rpc_c.submit_task(task_id, job_id, self.import_data(filelist, 0, 5)):
                             break
                         else:
+                            print("Sub failed.")
                             time.sleep(0.2)
     
     def run(self):
