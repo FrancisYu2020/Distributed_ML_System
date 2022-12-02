@@ -37,7 +37,7 @@ class Server:
     def fail_notice(self, worker):
         # heartbeat to check if main GS survive
         c = zerorpc.Client(
-            "tcp://{}:{}".format(COORDINATOR_HOST, COORDINATOR_PORT))
+            f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
         while True:
             try:
                 c.failure_handle(worker)
@@ -45,14 +45,14 @@ class Server:
             except Exception as e:
                 print(e)
                 c = zerorpc.Client(
-                    "tcp://{}:{}".format(HOT_STANDBY_COORDINATOR_HOST, COORDINATOR_PORT))
+                    f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                 continue
         return
 
     def join_notice(self, worker):
         # heartbeat to check if main GS survive
         c = zerorpc.Client(
-            "tcp://{}:{}".format(COORDINATOR_HOST, COORDINATOR_PORT))
+            f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
         while True:
             try:
                 c.add_worker(worker)
@@ -60,7 +60,7 @@ class Server:
             except Exception as e:
                 print(e)
                 c = zerorpc.Client(
-                    "tcp://{}:{}".format(HOT_STANDBY_COORDINATOR_HOST, COORDINATOR_PORT))
+                    f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                 continue
         return
 

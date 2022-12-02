@@ -17,15 +17,14 @@ class Coordinator:
             f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
 
     def log(func):
-        def deco_func(*args, **kwargs):
+        def log_func(*args, **kwargs):
             logging.info(f'Enter func: {func.__name__}.')
             ret = func(*args, **kwargs)
             logging.info(f'Exit func: {func.__name__}.')
             return ret
-        return deco_func
+        return log_func
 
     def submit_task(self, task_id, model_id, params):
-        # print(self.task_q)
         if len(self.task_q) >= self.max_q_size:
             return False
         logging.info(f'Get {model_id} query.')
@@ -96,7 +95,9 @@ class Coordinator:
         if self.hostname == COORDINATOR_HOST:
             self.sync_c.add_worker(worker)
         return
-
+    
+    def get_dash(self):
+        return self.dash, self.results
 
 if __name__ == "__main__":
     s = zerorpc.Server(Coordinator())

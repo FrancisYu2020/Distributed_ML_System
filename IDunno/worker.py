@@ -18,12 +18,12 @@ class Worker:
         self.client = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
 
     def log(func):
-        def deco_func(*args, **kwargs):
+        def log_func(*args, **kwargs):
             logging.info(f'Enter func: {func.__name__}.')
             ret = func(*args, **kwargs)
             logging.info(f'Exit func: {func.__name__}.')
             return ret
-        return deco_func
+        return log_func
 
     def __wait(self):
         time.sleep(0.25)
