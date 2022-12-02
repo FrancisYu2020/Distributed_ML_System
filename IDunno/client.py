@@ -53,7 +53,7 @@ class Client():
         pre_dash = pickle.loads(bytes_dash)
         
         for i in range(1, 11):
-            print("\r" + "■" * i * 3 + ">", end = "")
+            print("\r" + "■" * i * 6 + ">>>", end = "")
             time.sleep(1)
         print("")
         

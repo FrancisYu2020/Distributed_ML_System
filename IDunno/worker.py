@@ -26,7 +26,7 @@ class Worker:
         return log_func
 
     def __wait(self):
-        time.sleep(0.25)
+        time.sleep(0)
 
     @log
     def get_task(self):
