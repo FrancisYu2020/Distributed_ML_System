@@ -101,7 +101,10 @@ class Coordinator:
         return pickle.dumps(self.results)
     
     def get_worker_states(self):
-        return pickle.dumps(self.worker_states)
+        ret = {}
+        for worker, info in self.worker_states:
+            ret[worker] = info[1]
+        return pickle.dumps(ret)
 
 if __name__ == "__main__":
     s = zerorpc.Server(Coordinator())

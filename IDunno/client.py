@@ -21,6 +21,8 @@ class Client():
     def __init__(self):
         self.rpc_c = zerorpc.Client(
             f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
+        self.query_c = zerorpc.Client(
+            f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
         self.job_q = collections.deque()
         self.jobs = {}
 
@@ -32,12 +34,11 @@ class Client():
 
     def dashboard(self):
         try:
-            c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash = self.query_c.get_dash()
         except:
-            c = zerorpc.Client(
+            self.query_c = zerorpc.Client(
                 f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash = self.query_c.get_dash()
         c.close()
         dash = pickle.loads(bytes_dash)
         for job_id in dash:
@@ -47,14 +48,12 @@ class Client():
 
     def job_rates(self):
         print("We are working counting results, please wait for a moment :) ")
-
         try:
-            c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash = self.query_c.get_dash()
         except:
-            c = zerorpc.Client(
+            self.query_c = zerorpc.Client(
                 f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash = self.query_c.get_dash()
         c.close()
         pre_dash = pickle.loads(bytes_dash)
 
@@ -64,12 +63,11 @@ class Client():
         print("")
 
         try:
-            c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash = self.query_c.get_dash()
         except:
-            c = zerorpc.Client(
+            self.query_c = zerorpc.Client(
                 f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash = self.query_c.get_dash()
         c.close()
         suf_dash = pickle.loads(bytes_dash)
 
@@ -81,10 +79,33 @@ class Client():
             print(f'Job {job_name} speed: {avg} queries / 10s.')
 
     def get_results(self):
-        pass
+        try:
+            bytes_res = self.query_c.get_res()
+        except:
+            self.query_c = zerorpc.Client(
+                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
+            bytes_res = self.query_c.get_res()
+        res = pickle.loads(bytes_res)
+        for model_id, tasks in res.items():
+            name = self.jobs[model_id].name
+            sorted_res = sorted(tasks.items(), key = lambda x : x[0])
+            write_content = [r[0] for r in sorted_res]
+            with open(f'{name}_query_results') as f:
+                f.write(write_content)
 
     def get_vm_states(self):
-        pass
+        try:
+            bytes_vms = self.query_c.get_worker_states()
+        except:
+            self.query_c = zerorpc.Client(
+                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
+            bytes_vms = self.query_c.get_worker_states()
+        vms = pickle.loads(bytes_vms)
+        vm_states = collections.defaultdict(list)
+        for vm, job_id in vms.items():
+            vm_states[self.jobs[job_id].name].append(vm)
+        # TODO: complete print vm states part
+        print(vm_states)
 
     def shell(self):
         hint = '''Welcome to IDunno, please choose command:
