@@ -52,9 +52,9 @@ class Client():
         c.close()
         pre_dash = pickle.loads(bytes_dash)
         
-        for i in range(1, 11):
-            print("\r" + "■" * i)
-            time.sleep(1)
+        for i in range(1, 101):
+            print("\r" + "■" * i, end = "")
+            time.sleep(0.1)
         
         try:
             c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
