@@ -72,7 +72,8 @@ class Client():
                             break
                         else:
                             time.sleep(0.2)
-                except:
+                except Exception as e:
+                    print(e)
                     self.rpc_c = zerorpc.Client(
                     f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                     while True:
