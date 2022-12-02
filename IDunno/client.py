@@ -65,9 +65,10 @@ class Client():
                 self.job_q.append(job_name)
                 task_id = f'{job_name} {time.time()}'
                 filelist = self.jobs[job_name].files
+                model_id = self.jobs[job_name].job_id
                 try:
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_name, self.import_data(filelist, 0, 10)):
+                        if self.rpc_c.submit_task(task_id, model_id, self.import_data(filelist, 0, 10)):
                             print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
