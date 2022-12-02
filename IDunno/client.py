@@ -46,8 +46,8 @@ class Client():
         1. sub <job name> <local data path>
         2. get-stats
         3. help'''
+        print(hint)
         while True:
-            print(hint)
             cmd = input(">")
             args = cmd.split(" ")
             if args[0] == "sub" and len(args) == 3:
@@ -58,11 +58,13 @@ class Client():
                 filelist = ['imageNet/val/' + f for f in filelist]
 
                 job_id = SDFShell.put(job_name)
-                self.jobs[job_name] = JobInfo(job_name, job_id, filelist)
+                self.jobs[job_id] = JobInfo(job_name, job_id, filelist)
                 
-                self.job_q.append(job_name)
+                self.job_q.append(job_id)
             elif args[0] == "get-stats" and len(args) == 1:
                 self.dashboard()
+            elif args[0] == "help" and len(args) == 1:
+                print(hint)
             else:
                 print("Invalid command! If you need any help, please input 'help'.")
 
@@ -71,14 +73,13 @@ class Client():
             if len(self.job_q) == 0:
                 time.sleep(0.5)
             else:
-                job_name = self.job_q.popleft()
-                self.job_q.append(job_name)
-                task_id = f'{job_name} {time.time()}'
-                filelist = self.jobs[job_name].files
-                model_id = self.jobs[job_name].job_id
+                job_id = self.job_q.popleft()
+                self.job_q.append(job_id)
+                task_id = f'{job_id} {time.time()}'
+                filelist = self.jobs[job_id].files
                 try:
                     while True:
-                        if self.rpc_c.submit_task(task_id, model_id, self.import_data(filelist, 0, 10)):
+                        if self.rpc_c.submit_task(task_id, job_id, self.import_data(filelist, 0, 10)):
                             # print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
@@ -88,8 +89,7 @@ class Client():
                     self.rpc_c = zerorpc.Client(
                     f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                     while True:
-                        if self.rpc_c.submit_task(task_id, model_id, self.import_data(filelist, 0, 10)):
-                            print(f'Submit task {task_id} for {job_name} successful.')
+                        if self.rpc_c.submit_task(task_id, job_id, self.import_data(filelist, 0, 10)):
                             break
                         else:
                             time.sleep(0.2)
