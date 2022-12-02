@@ -9,7 +9,8 @@ import time
 import threading
 
 class JobInfo():
-    def __init__(self, job_id = None, files = None):
+    def __init__(self, name = None, job_id = None, files = None):
+        self.name = name
         self.job_id = job_id
         self.files = files
 
@@ -35,9 +36,10 @@ class Client():
         c.close()
         dash = pickle.loads(bytes_dash)
         results = pickle.loads(bytes_results)
-        for job in dash:
-            num = dash[job]
-            print(f'Job {job} finished {num} queries.')
+        for job_id in dash:
+            num = dash[job_id]
+            job_name = self.jobs[job_id].name
+            print(f'Job {job_name} finished {num} queries.')
 
     def shell(self):
         hint = '''Welcome to IDunno, please choose command:
@@ -56,7 +58,7 @@ class Client():
                 filelist = ['imageNet/val/' + f for f in filelist]
 
                 job_id = SDFShell.put(job_name)
-                self.jobs[job_name] = JobInfo(job_id, filelist)
+                self.jobs[job_name] = JobInfo(job_name, job_id, filelist)
                 
                 self.job_q.append(job_name)
             elif args[0] == "get-stats" and len(args) == 1:
