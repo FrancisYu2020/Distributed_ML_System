@@ -29,17 +29,48 @@ class Client():
     def dashboard(self):
         try:
             c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash, bytes_results = c.get_dash()
+            bytes_dash = c.get_dash()
         except:
             c = zerorpc.Client(f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash, bytes_results = c.get_dash()
+            bytes_dash = c.get_dash()
         c.close()
         dash = pickle.loads(bytes_dash)
-        results = pickle.loads(bytes_results)
         for job_id in dash:
             num = dash[job_id]
             job_name = self.jobs[job_id].name
             print(f'Job {job_name} finished {num} queries.')
+
+    def query_rates(self):
+        print("We are working counting results, please wait for a moment :) ")
+
+        try:
+            c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
+        except:
+            c = zerorpc.Client(f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
+        c.close()
+        pre_dash = pickle.loads(bytes_dash)
+        
+        for i in range(1, 11):
+            print("\r" + "■" * i)
+            time.sleep(1)
+        
+        try:
+            c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
+        except:
+            c = zerorpc.Client(f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
+        c.close()
+        suf_dash = pickle.loads(bytes_dash)
+
+        for job_id in pre_dash:
+            pre_num = pre_dash[job_id]
+            suf_num = suf_dash[job_id]
+            job_name = self.jobs[job_id].name
+            avg = (suf_num - pre_num) / 10 
+            print(f'Job {job_name} speed: {avg} queries / 10s.')
 
     def shell(self):
         hint = '''Welcome to IDunno, please choose command:
@@ -48,7 +79,7 @@ class Client():
         3. help'''
         print(hint)
         while True:
-            cmd = input(">")
+            cmd = input("> ")
             args = cmd.split(" ")
             if args[0] == "sub" and len(args) == 3:
                 job_name, data_path = args[1:]
