@@ -28,10 +28,13 @@ class Client():
     def dashboard(self):
         try:
             c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            dash, results = c.get_dash()
+            bytes_dash, bytes_results = c.get_dash()
         except:
             c = zerorpc.Client(f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            dash, results = c.get_dash()
+            bytes_dash, bytes_results = c.get_dash()
+        c.close()
+        dash = pickle.loads(bytes_dash)
+        results = pickle.loads(bytes_results)
         for job in dash:
             num = dash[job]
             print(f'Job {job} finished {num} queries.')

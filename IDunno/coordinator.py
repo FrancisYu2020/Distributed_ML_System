@@ -95,7 +95,7 @@ class Coordinator:
         return
     
     def get_dash(self):
-        return self.dash, self.results
+        return pickle.dumps(self.dash), pickle.dumps(self.results)
 
 if __name__ == "__main__":
     s = zerorpc.Server(Coordinator())
