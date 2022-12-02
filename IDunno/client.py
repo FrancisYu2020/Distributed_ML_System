@@ -16,7 +16,7 @@ class JobInfo():
 class Client():
     def __init__(self):
         self.rpc_c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
+                f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
         self.job_q = collections.deque()
         self.jobs = {}
     
