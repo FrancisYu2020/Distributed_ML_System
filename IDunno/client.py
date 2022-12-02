@@ -78,7 +78,7 @@ class Client():
                     self.rpc_c = zerorpc.Client(
                     f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_name, self.import_data(filelist, 0, 10)):
+                        if self.rpc_c.submit_task(task_id, model_id, self.import_data(filelist, 0, 10)):
                             print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
