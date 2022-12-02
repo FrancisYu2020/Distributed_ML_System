@@ -39,7 +39,6 @@ class Client():
             self.query_c = zerorpc.Client(
                 f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
             bytes_dash = self.query_c.get_dash()
-        c.close()
         dash = pickle.loads(bytes_dash)
         for job_id in dash:
             num = dash[job_id]
@@ -54,7 +53,6 @@ class Client():
             self.query_c = zerorpc.Client(
                 f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
             bytes_dash = self.query_c.get_dash()
-        c.close()
         pre_dash = pickle.loads(bytes_dash)
 
         for i in range(1, 11):
@@ -68,7 +66,6 @@ class Client():
             self.query_c = zerorpc.Client(
                 f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
             bytes_dash = self.query_c.get_dash()
-        c.close()
         suf_dash = pickle.loads(bytes_dash)
 
         for job_id in pre_dash:
@@ -170,7 +167,6 @@ class Client():
                             # print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
-                            print("Sub failed.")
                             time.sleep(0.2)
                 except Exception as e:
                     print(e)
@@ -180,7 +176,6 @@ class Client():
                         if self.rpc_c.submit_task(task_id, job_id, self.import_data(filelist, 0, self.jobs[job_id].batch_size)):
                             break
                         else:
-                            print("Sub failed.")
                             time.sleep(0.2)
 
     def run(self):
