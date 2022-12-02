@@ -85,9 +85,8 @@ class Client():
     
     def run(self):
         t_shell = threading.Thread(target = self.shell)
-        t_sub_task = threading.Thread(target = self.sub_task)
         t_shell.start()
-        t_sub_task.start()
+        self.sub_task()
 
         t_shell.join()
         t_sub_task.join()
