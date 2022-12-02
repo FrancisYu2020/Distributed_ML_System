@@ -26,7 +26,12 @@ class Client():
         return pickle.dumps(img_list)
 
     def dashboard(self):
-        dash, results = self.rpc_c.get_dash()
+        try:
+            c = zerorpc.Client(f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
+            dash, results = c.get_dash()
+        except:
+            c = zerorpc.Client(f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
+            dash, results = c.get_dash()
         for job in dash:
             num = dash[job]
             print(f'Job {job} finished {num} queries.')
@@ -69,7 +74,7 @@ class Client():
                 try:
                     while True:
                         if self.rpc_c.submit_task(task_id, model_id, self.import_data(filelist, 0, 10)):
-                            print(f'Submit task {task_id} for {job_name} successful.')
+                            # print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
                             time.sleep(0.2)
