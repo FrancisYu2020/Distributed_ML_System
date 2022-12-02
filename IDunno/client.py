@@ -40,7 +40,7 @@ class Client():
             job_name = self.jobs[job_id].name
             print(f'Job {job_name} finished {num} queries.')
 
-    def query_rates(self):
+    def job_rates(self):
         print("We are working counting results, please wait for a moment :) ")
 
         try:
@@ -76,7 +76,8 @@ class Client():
         hint = '''Welcome to IDunno, please choose command:
         1. sub <job name> <local data path>
         2. get-stats
-        3. help'''
+        3. job-rates
+        4. help'''
         print(hint)
         while True:
             cmd = input("> ")
@@ -94,6 +95,8 @@ class Client():
                 self.job_q.append(job_id)
             elif args[0] == "get-stats" and len(args) == 1:
                 self.dashboard()
+            elif args[0] == "job-rates" and len(args) == 1:
+                self.job_rates()
             elif args[0] == "help" and len(args) == 1:
                 print(hint)
             else:
