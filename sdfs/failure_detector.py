@@ -194,6 +194,7 @@ class Server:
         
 
     def shell(self):
+        self.join()
         while 1:
             print("=======================================================")
             print("1. list_mem: list current membership list in the ring")
