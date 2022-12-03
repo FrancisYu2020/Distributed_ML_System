@@ -6,3 +6,6 @@
 2022-12-03,00:19:06.517 INFO {name_node} [run] NameNode Start
 2022-12-03,00:19:06.519 INFO {name_node} [run] Consumer Start
 2022-12-03,00:19:06.522 INFO {name_node} [producer] Producer start.
+2022-12-03,00:41:41.455 INFO {name_node} [run] Receive put request: 86fbc66672d511ed89ce0050568d8c85
+2022-12-03,00:41:43.979 INFO {name_node} [run] Receive get request: 86fbc66672d511ed89ce0050568d8c85
+2022-12-03,00:41:43.979 INFO {name_node} [run] Receive get request: 86fbc66672d511ed89ce0050568d8c85
