@@ -92,7 +92,11 @@ class Model(nn.Module):
         self.model = self.load_pretrained(nn_name)
         self.testdata = None
         self.testloader = None
-    
+        with open('labels.json', 'r') as f:
+            self.readable = json.load(f)
+        for key in self.readable:
+            self.readable[int(key)] = self.readable[key]
+
     def load_data(self, data):
         self.testdata = ImageNet(data)
         self.testloader = DataLoader(self.testdata, batch_size=BATCH_SIZE, shuffle=True)
@@ -141,5 +145,11 @@ class Model(nn.Module):
                 counter += pred.size(0)
                 pred_batches.append(pred)
                 # label_batches.append(label)
-        return self.get_accuracy(torch.cat(pred_batches, dim=0))
+        pred_label = torch.cat(pred_batches, dim=0).argmax(dim=1)
+        ret = ""
+        for label in pred_label:
+            ret += self.readable[label] + " | "
+        ret = ret[:=3]
+        return ret
+        # return self.get_accuracy(torch.cat(pred_batches, dim=0))
         # return self.get_accuracy(torch.cat(pred_batches, dim=0), torch.cat(label_batches, dim=0))
