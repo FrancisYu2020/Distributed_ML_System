@@ -21,8 +21,7 @@ class Client():
     def __init__(self):
         self.rpc_c = zerorpc.Client(
             f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
-        self.query_c = zerorpc.Client(
-            f'tcp://{COORDINATOR_HOST}:{COORDINATOR_PORT}')
+        self.coordinator_host = COORDINATOR_HOST
         self.job_q = collections.deque()
         self.jobs = {}
 
@@ -34,11 +33,13 @@ class Client():
 
     def dashboard(self):
         try:
-            bytes_dash = self.query_c.get_dash()
+            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
         except:
-            self.query_c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = self.query_c.get_dash()
+            self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
         dash = pickle.loads(bytes_dash)
         for job_id in dash:
             num = dash[job_id]
@@ -48,11 +49,13 @@ class Client():
     def job_rates(self):
         print("We are working counting results, please wait for a moment :) ")
         try:
-            bytes_dash = self.query_c.get_dash()
+            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
         except:
-            self.query_c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = self.query_c.get_dash()
+            self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
         pre_dash = pickle.loads(bytes_dash)
 
         for i in range(1, 11):
@@ -61,11 +64,13 @@ class Client():
         print("")
 
         try:
-            bytes_dash = self.query_c.get_dash()
+            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
         except:
-            self.query_c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_dash = self.query_c.get_dash()
+            self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_dash = c.get_dash()
         suf_dash = pickle.loads(bytes_dash)
 
         for job_id in pre_dash:
@@ -77,11 +82,13 @@ class Client():
 
     def get_results(self):
         try:
-            bytes_res = self.query_c.get_res()
+            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_res = c.get_res()
         except:
-            self.query_c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_res = self.query_c.get_res()
+            self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_res = c.get_res()
         res = pickle.loads(bytes_res)
         for model_id, tasks in res.items():
             name = self.jobs[model_id].name
@@ -92,11 +99,13 @@ class Client():
 
     def get_vm_states(self):
         try:
-            bytes_vms = self.query_c.get_worker_states()
+            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_vms = c.get_worker_states()
         except:
-            self.query_c = zerorpc.Client(
-                f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
-            bytes_vms = self.query_c.get_worker_states()
+            self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            bytes_vms = c.get_worker_states()
         vms = pickle.loads(bytes_vms)
         vm_states = collections.defaultdict(list)
         for vm, job_id in vms.items():
@@ -170,6 +179,7 @@ class Client():
                             time.sleep(0.2)
                 except Exception as e:
                     print(e)
+                    self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
                     self.rpc_c = zerorpc.Client(
                         f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                     while True:
