@@ -205,7 +205,7 @@ class Server:
             print("=======================================================")
             print("Please input command:")
             # time.sleep(0.2)
-            self.join()
+            # self.join()
             command = input()
             if command == "list_mem":
                 with ML_lock:
