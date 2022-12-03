@@ -149,7 +149,7 @@ class Model(nn.Module):
         ret = ""
         for label in pred_label:
             ret += self.readable[label] + " | "
-        ret = ret[:=3]
+        ret = ret[:3]
         return ret
         # return self.get_accuracy(torch.cat(pred_batches, dim=0))
         # return self.get_accuracy(torch.cat(pred_batches, dim=0), torch.cat(label_batches, dim=0))
