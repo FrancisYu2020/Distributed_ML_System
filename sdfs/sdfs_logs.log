@@ -1,8 +1,8 @@
-2022-12-02,23:39:47.716 INFO {data_node} [run_data_node] DataNode Start
-2022-12-02,23:39:47.719 INFO {name_node} [safe_checker] Safe Checker start
-2022-12-02,23:39:47.720 INFO {name_node} [initial_mode] Initial Namenode...
-2022-12-02,23:39:47.720 INFO {name_node} [initial_mode] Cur Files: 
-2022-12-02,23:39:47.720 INFO {name_node} [initial_mode] Finsih Initial Namenode.
-2022-12-02,23:39:47.720 INFO {name_node} [run] NameNode Start
-2022-12-02,23:39:47.721 INFO {name_node} [run] Consumer Start
-2022-12-02,23:39:47.724 INFO {name_node} [producer] Producer start.
+2022-12-02,23:47:08.634 INFO {data_node} [run_data_node] DataNode Start
+2022-12-02,23:47:08.637 INFO {name_node} [safe_checker] Safe Checker start
+2022-12-02,23:47:08.637 INFO {name_node} [initial_mode] Initial Namenode...
+2022-12-02,23:47:08.638 INFO {name_node} [initial_mode] Cur Files: 
+2022-12-02,23:47:08.638 INFO {name_node} [initial_mode] Finsih Initial Namenode.
+2022-12-02,23:47:08.638 INFO {name_node} [run] NameNode Start
+2022-12-02,23:47:08.639 INFO {name_node} [run] Consumer Start
+2022-12-02,23:47:08.643 INFO {name_node} [producer] Producer start.

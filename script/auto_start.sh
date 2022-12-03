@@ -1,8 +1,14 @@
 #!/bin/bash
+
+#TODO: open the introducer and sdfs
+
+#TODO: open the coordinator and hot standby
+
+#TODO: open the workers
 for val in {1..9}
 do
     echo VM$val Updating
-    ssh hangy6@fa22-cs425-220$val.cs.illinois.edu "cd mp4; pkill python"
+    ssh hangy6@fa22-cs425-220$val.cs.illinois.edu "cd mp4/IDunno; pkill python"
     echo VM$val Updated
 done
 echo VM10 Updating
