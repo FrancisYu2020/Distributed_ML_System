@@ -94,9 +94,10 @@ class Model(nn.Module):
         self.testdata = None
         self.testloader = None
         with open('labels.json', 'r') as f:
-            self.readable = json.load(f)
-        for key in self.readable:
-            self.readable[int(key)] = self.readable[key]
+            self.readable_tmp = json.load(f)
+        self.readable = {}
+        for key in self.readable_tmp:
+            self.readable[int(key)] = self.readable_tmp[key]
 
     def load_data(self, data):
         self.testdata = ImageNet(data)
