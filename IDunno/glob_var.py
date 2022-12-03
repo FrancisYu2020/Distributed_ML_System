@@ -19,10 +19,12 @@ logging.basicConfig(level=logging.INFO,
                     filename='log',
                     filemode='w')
 
+
 class TestModel:
     def predict(self, params):
         time.sleep(3)
         return "Predict Test {} for TestModel".format(params)
+
 
 class AnotherModel:
     def predict(self, params):

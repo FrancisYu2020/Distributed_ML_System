@@ -93,18 +93,19 @@ class Coordinator:
         if self.hostname == COORDINATOR_HOST:
             self.sync_c.add_worker(worker)
         return
-    
+
     def get_dash(self):
         return pickle.dumps(self.dash)
-    
+
     def get_res(self):
         return pickle.dumps(self.results)
-    
+
     def get_worker_states(self):
         ret = {}
         for worker, info in self.worker_states.items():
             ret[worker] = info[1]
         return pickle.dumps(ret)
+
 
 if __name__ == "__main__":
     s = zerorpc.Server(Coordinator())

@@ -37,7 +37,8 @@ class Worker:
                 self.__wait()
         except Exception as e:
             self.host = HOT_STANDBY_COORDINATOR_HOST
-            self.client = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
+            self.client = zerorpc.Client(
+                f'tcp://{self.host}:{COORDINATOR_PORT}')
             while not task_params:
                 task_params = self.client.poll_task(self.name)
                 self.__wait()
@@ -54,7 +55,8 @@ class Worker:
             self.client.commit_task(model_id, task_id, self.name, res)
         except:
             self.host = HOT_STANDBY_COORDINATOR_HOST
-            self.client = zerorpc.Client(f'tcp://{self.host}:{COORDINATOR_PORT}')
+            self.client = zerorpc.Client(
+                f'tcp://{self.host}:{COORDINATOR_PORT}')
             self.client.commit_task(model_id, task_id, self.name, res)
         logging.info(f'Commit {model_id} query task {task_id}.')
 
