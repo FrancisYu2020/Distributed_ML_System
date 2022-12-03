@@ -33,7 +33,8 @@ class Client():
 
     def dashboard(self):
         try:
-            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
             bytes_dash = c.get_dash()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
@@ -49,7 +50,8 @@ class Client():
     def job_rates(self):
         print("We are working counting results, please wait for a moment :) ")
         try:
-            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
             bytes_dash = c.get_dash()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
@@ -59,12 +61,13 @@ class Client():
         pre_dash = pickle.loads(bytes_dash)
 
         for i in range(1, 11):
-            print("\r" + "■" * i * 6 + "]]", end="")
+            print("\r" + "■" * i * 6 + " ]", end="")
             time.sleep(1)
         print("")
 
         try:
-            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
             bytes_dash = c.get_dash()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
@@ -82,7 +85,8 @@ class Client():
 
     def get_results(self):
         try:
-            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
             bytes_res = c.get_res()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
@@ -92,14 +96,15 @@ class Client():
         res = pickle.loads(bytes_res)
         for model_id, tasks in res.items():
             name = self.jobs[model_id].name
-            sorted_res = sorted(tasks.items(), key = lambda x : x[0])
+            sorted_res = sorted(tasks.items(), key=lambda x: x[0])
             write_content = [r[0] for r in sorted_res]
             with open(f'{name}_query_results') as f:
                 f.write(write_content)
 
     def get_vm_states(self):
         try:
-            c = zerorpc.Client(f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
+            c = zerorpc.Client(
+                f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
             bytes_vms = c.get_worker_states()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
@@ -150,8 +155,6 @@ class Client():
                         self.jobs[id].batch_size = int(batch_size)
                         print(
                             f'Set batch size of {job_name} job to {batch_size} successfully.')
-                        break
-                print(f'You do not have job {job_name}, please try again.')
             elif args[0] == "get-results" and len(args) == 1:
                 self.get_results()
             elif args[0] == "vm-states" and len(args) == 1:

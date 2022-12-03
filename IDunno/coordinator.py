@@ -102,7 +102,7 @@ class Coordinator:
     
     def get_worker_states(self):
         ret = {}
-        for worker, info in self.worker_states:
+        for worker, info in self.worker_states.items():
             ret[worker] = info[1]
         return pickle.dumps(ret)
 
