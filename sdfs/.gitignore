@@ -2,9 +2,9 @@ IDunno/imageNet
 IDunno/imageNet/**
 IDunno/log
 IDunno/DNN_old.py
-sdfs/__pycache__/**
-sdfs/__pycache__
-sdfs/sdfs_log.log
+__pycache__/**
+__pycache__
+sdfs_log.log
 #sdfs
 #sdfs/**
 #script
