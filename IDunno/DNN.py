@@ -151,7 +151,7 @@ class Model(nn.Module):
         ret = []
         for label in pred_label:
             try:
-                ret.append(self.readable[label])
+                ret.append(self.readable[label.item()])
                 # ret += self.readable[label] + " | "
             except:
                 ret.append("vulture")
