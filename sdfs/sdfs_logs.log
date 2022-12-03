@@ -1,8 +1,0 @@
-2022-12-03,00:01:29.234 INFO {data_node} [run_data_node] DataNode Start
-2022-12-03,00:01:29.238 INFO {name_node} [safe_checker] Safe Checker start
-2022-12-03,00:01:29.238 INFO {name_node} [initial_mode] Initial Namenode...
-2022-12-03,00:01:29.238 INFO {name_node} [initial_mode] Cur Files: 
-2022-12-03,00:01:29.238 INFO {name_node} [initial_mode] Finsih Initial Namenode.
-2022-12-03,00:01:29.238 INFO {name_node} [run] NameNode Start
-2022-12-03,00:01:29.240 INFO {name_node} [run] Consumer Start
-2022-12-03,00:01:29.243 INFO {name_node} [producer] Producer start.
