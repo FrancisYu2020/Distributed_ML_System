@@ -148,7 +148,7 @@ class Model(nn.Module):
                 pred_batches.append(pred)
                 # label_batches.append(label)
         pred_label = torch.cat(pred_batches, dim=0).argmax(dim=1)
-        ret = ""
+        ret = []
         for label in pred_label:
             try:
                 ret.append(self.readable[label])
