@@ -151,10 +151,12 @@ class Model(nn.Module):
         ret = ""
         for label in pred_label:
             try:
-                ret += self.readable[label] + " | "
+                ret.append(self.readable[label])
+                # ret += self.readable[label] + " | "
             except:
-                ret += "vulture | "
-        ret = ret[:3]
+                ret.append("vulture")
+                # ret += "vulture | "
+        # ret = ret[:3]
         return ret
         # return self.get_accuracy(torch.cat(pred_batches, dim=0))
         # return self.get_accuracy(torch.cat(pred_batches, dim=0), torch.cat(label_batches, dim=0))
