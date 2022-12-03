@@ -204,6 +204,8 @@ class Server:
             print("6. exit: shutdown this node")
             print("=======================================================")
             print("Please input command:")
+            # time.sleep(0.2)
+            self.join()
             command = input()
             if command == "list_mem":
                 with ML_lock:
