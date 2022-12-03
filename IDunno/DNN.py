@@ -150,7 +150,10 @@ class Model(nn.Module):
         pred_label = torch.cat(pred_batches, dim=0).argmax(dim=1)
         ret = ""
         for label in pred_label:
-            ret += self.readable[label] + " | "
+            try:
+                ret += self.readable[label] + " | "
+            except:
+                ret += "vulture | "
         ret = ret[:3]
         return ret
         # return self.get_accuracy(torch.cat(pred_batches, dim=0))
