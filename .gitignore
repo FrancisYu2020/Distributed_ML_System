@@ -1,0 +1,16 @@
+IDunno/imageNet
+IDunno/imageNet/**
+IDunno/__pycache__
+IDunno/log
+IDunno/DNN_old.py
+IDunno/experiment.txt
+sdfs/__pycache__/**
+sdfs/__pycache__
+sdfs/sdfs_logs.log
+sdfs/store
+# script/
+# script/**
+#sdfs
+#sdfs/**
+#script
+#script/**
