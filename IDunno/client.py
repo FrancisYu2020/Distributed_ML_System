@@ -252,7 +252,7 @@ class Client():
                         else:
                             time.sleep(0.2)
                 except Exception as e:
-                    print(e)
+                    # print(e)
                     self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
                     self.rpc_c = zerorpc.Client(
                         f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
