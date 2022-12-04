@@ -60,17 +60,16 @@ class Worker:
             self.client.commit_task(model_id, task_id, self.name, res)
         logging.info(f'Commit {model_id} query task {task_id}.')
 
-    def import_data(self, filelist, start, end):
+    def import_data(self, filelist):
         # 0-index
-        img_list = [read_image(filelist[img_idx])
-                    for img_idx in range(start, end)]
-        return pickle.dumps(img_list)
+        img_list = [read_image(img)
+                    for img in filelist]
+        return img_list
 
     @log
     def exec_task(self, model, data):
-        filelist, start, end = data
-        print(filelist)
-        data = self.import_data(filelist, start, end)
+        filelist = data
+        data = self.import_data(filelist)
         model.load_data(data)
         return model.predict()
 

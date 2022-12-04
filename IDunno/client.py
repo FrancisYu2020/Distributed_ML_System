@@ -180,7 +180,7 @@ class Client():
                 filelist = self.jobs[job_id].files
                 try:
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_id, (filelist, 0, self.jobs[job_id].batch_size)):
+                        if self.rpc_c.submit_task(task_id, job_id, filelist[0: self.jobs[job_id].batch_size]):
                             # print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
@@ -191,7 +191,7 @@ class Client():
                     self.rpc_c = zerorpc.Client(
                         f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_id, (filelist, 0, self.jobs[job_id].batch_size)):
+                        if self.rpc_c.submit_task(task_id, job_id, filelist[0: self.jobs[job_id].batch_size]):
                             break
                         else:
                             time.sleep(0.2)
