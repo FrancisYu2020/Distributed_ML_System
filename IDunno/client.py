@@ -61,9 +61,9 @@ class Client():
             # avg = np.round(query_rates.mean(), 3)
             std = np.round(query_rates.std() / 100, 3)
             median = np.round(query_rates[len(query_rates)//2], 3)
-            percentile1 = np.round(query_rates[int(0.9 * len(query_rates))], 3) # 90 percentile
-            percentile2 = np.round(query_rates[int(0.95 * len(query_rates))], 3) # 95 percentile
-            percentile3 = np.round(query_rates[int(0.99 * len(query_rates))], 3) # 99 percentile
+            percentile1 = np.round(query_rates[int(0.1 * len(query_rates))], 3) # 90 percentile
+            percentile2 = np.round(query_rates[int(0.05 * len(query_rates))], 3) # 95 percentile
+            percentile3 = np.round(query_rates[int(0.01 * len(query_rates))], 3) # 99 percentile
             record = f'Job {job_name} finished {num} queries, query rate average = {avg}, std = {std}, median = {median}, 90 percentile = {percentile1}, 95 percentile = {percentile2}, 99 percentile = {percentile3}'
             print(record)
             with open('experiment.txt', 'a') as f:

@@ -71,6 +71,19 @@ vm-states
 kill <worker/coordinator> <vm id>
 ```
 
+Alternatively, you can use the provided scripts to start SDFS/coordinates/workers quickly. To use the scripts, first, use:
+```
+sh start_sdfs.sh
+```
+this will load the script appointed machines to serve as the SDFS, then manually start the defined coordinator using the command provided above. Finally, simply run:
+```
+sh start_workers.sh [excluded worker 1] [excluded worker 2]
+```
+to start the hot standby and all the workers except for the excluded workers. Excluded worker is the ID of a VM and if not specified, the default argument value would be 3 and 4 which means the worker on VM 3 and VM 4 has not been started yet.
+This is for the convenience of shutting down the workers during IDunno is running. Please remember to start the excluded workers before the jobs are submitted.
+
+Finally, start the client and do the job using the command mentioned above!
+
 ## Support
 If you have any questions, please contact tian23@illinois.edu or hangy6@illinois.edu
 
