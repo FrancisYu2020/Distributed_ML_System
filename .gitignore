@@ -8,8 +8,8 @@ sdfs/__pycache__/**
 sdfs/__pycache__
 sdfs/sdfs_logs.log
 sdfs/store
-script/
-script/**
+# script/
+# script/**
 #sdfs
 #sdfs/**
 #script
