@@ -14,6 +14,10 @@ done
 
 echo SDFS started!
 
+echo start worker introducer on VM10...
+ssh $USER@fa22-cs425-2210.cs.illinois.edu "cd mp4/IDunno; exec -a introducer python3 introducer.py" &
+sleep 0.5
+
 
 
 

@@ -59,7 +59,7 @@ class Client():
             # job_times = np.array(job_times)[10:]
             query_rates = 1 / job_times
             # avg = np.round(query_rates.mean(), 3)
-            std = np.round(query_rates.std() / 100, 3)
+            std = np.round(query_rates.std() / 200, 3)
             median = np.round(query_rates[len(query_rates)//2], 3)
             percentile1 = np.round(query_rates[int(0.1 * len(query_rates))], 3) # 90 percentile
             percentile2 = np.round(query_rates[int(0.05 * len(query_rates))], 3) # 95 percentile
@@ -264,13 +264,13 @@ class Client():
 
     def run(self):
         t_shell = threading.Thread(target=self.shell)
-        t_experiment = threading.Thread(target=self.experiment)
+        # t_experiment = threading.Thread(target=self.experiment)
         t_shell.start()
-        t_experiment.start()
+        # t_experiment.start()
         self.sub_task()
 
         t_shell.join()
-        t_experiment.join()
+        # t_experiment.join()
         t_sub_task.join()
 
 

@@ -4,11 +4,7 @@ ssh $USER@fa22-cs425-2202.cs.illinois.edu "cd mp4/IDunno; exec -a coordinator py
 sleep 0.5
 echo Hot standby loaded!
 
-#TODO: open the introducer and  workers
-echo start worker introducer on VM10...
-ssh $USER@fa22-cs425-2210.cs.illinois.edu "cd mp4/IDunno; exec -a introducer python3 introducer.py" &
-sleep 0.5
-
+#TODO: open the workers
 for val in {1..9}
 do
     if [ $# -eq 0 ]
