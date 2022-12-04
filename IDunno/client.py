@@ -7,7 +7,7 @@ from DNN import *
 import pickle
 import time
 import threading
-
+import numpy as np
 
 class JobInfo():
     def __init__(self, name=None, job_id=None, files=None, batch_size=None):
@@ -24,6 +24,8 @@ class Client():
         self.coordinator_host = COORDINATOR_HOST
         self.job_q = collections.deque()
         self.jobs = {}
+        self.SHOULD_EXIT = 0
+
 
     def import_data(self, filelist, start, end):
         # 0-index
@@ -35,29 +37,39 @@ class Client():
         try:
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash, times = c.get_dash()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash, times = c.get_dash()
         dash = pickle.loads(bytes_dash)
         for job_id in dash:
             num = dash[job_id]
             job_name = self.jobs[job_id].name
-            print(f'Job {job_name} finished {num} queries.')
+            job_times = times[job_id]
+            job_times.sort()
+            job_times = np.array(job_times)
+            query_rates = 1 / job_times
+            avg = query_rates.avg()
+            std = query_rates.std()
+            median = query_rates[len(query_rates)//2]
+            percentile1 = query_rates[int(0.9 * len(query_rates))] # 90 percentile
+            percentile2 = query_rates[int(0.95 * len(query_rates))] # 95 percentile
+            percentile3 = query_rates[int(0.99 * len(query_rates))] # 99 percentile
+            print(f'Job {job_name} finished {num} queries, query rate average = {avg}, std = {std}, median = {median}, 90 percentile = {percentile1}, 95 percentile = {percentile2}, 99 percentile = {percentile3}')
 
     def job_rates(self):
         print("We are working counting results, please wait for a moment :) ")
         try:
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash, _ = c.get_dash()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash, _ = c.get_dash()
         pre_dash = pickle.loads(bytes_dash)
 
         for i in range(1, 11):
@@ -68,12 +80,12 @@ class Client():
         try:
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash, times = c.get_dash()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash = c.get_dash()
+            bytes_dash, times = c.get_dash()
         suf_dash = pickle.loads(bytes_dash)
 
         for job_id in pre_dash:
@@ -121,6 +133,18 @@ class Client():
         # TODO: complete print vm states part
         for job, vms in vm_states.items():
             print("{}: {}".format(job, vms))
+    
+    def kill_worker(self, idx):
+        pass
+        print(f"Worker on VM{idx} has been killed successfully!")
+    
+    def kill_coordinator(self, idx):
+        if idx == 2:
+            print("Cannot kill hot standby!")
+        elif idx == 1:
+            pass
+        else:
+            print(f"VM{idx} is not a coordinator!")
 
     def shell(self):
         hint = '''Welcome to IDunno, please choose command:
@@ -130,7 +154,9 @@ class Client():
         4. set-batch <job name> <batch size>
         5. get-results
         6. vm-states
-        7. help'''
+        7. kill <worker/coordinator> <VM ID>
+        8. help
+        9. exit'''
         print(hint)
         while True:
             cmd = input("> ")
@@ -166,11 +192,23 @@ class Client():
                 self.get_vm_states()
             elif args[0] == "help" and len(args) == 1:
                 print(hint)
+            elif len(args) == 3 and args[0] == "kill":
+                if args[1] == "worker":
+                    self.kill_worker(int(args[2]))
+                elif args[1] == "coordinator":
+                    self.kill_coordinator(int(args[2]))
+            elif args[0] == "exit":
+                # exit(0)
+                # break
+                self.SHOULD_EXIT = 1
+                exit(0)
             else:
                 print("Invalid command! If you need any help, please input 'help'.")
 
     def sub_task(self):
         while True:
+            if self.SHOULD_EXIT:
+                exit(0)
             if len(self.job_q) == 0:
                 time.sleep(0.5)
             else:

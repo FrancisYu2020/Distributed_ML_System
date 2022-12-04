@@ -1,0 +1,66 @@
+2022-12-04,00:34:21.561 INFO {name_node} [safe_checker] Safe Checker start
+2022-12-04,00:34:21.561 INFO {name_node} [initial_mode] Initial Namenode...
+2022-12-04,00:34:21.561 INFO {name_node} [initial_mode] Cur Files: 
+2022-12-04,00:34:21.561 INFO {name_node} [initial_mode] Finsih Initial Namenode.
+2022-12-04,00:34:21.561 INFO {name_node} [run] NameNode Start
+2022-12-04,00:34:21.563 INFO {data_node} [run_data_node] DataNode Start
+2022-12-04,00:34:21.565 INFO {name_node} [run] Consumer Start
+2022-12-04,00:34:21.570 INFO {name_node} [producer] Producer start.
+2022-12-04,00:35:00.275 INFO {name_node} [run] Receive put request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.689 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.689 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.689 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.689 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.689 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.689 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.690 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.690 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.690 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:35:22.690 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,00:36:25.676 INFO {name_node} [run] Receive put request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:26.086 INFO {data_node} [forward] Try to forward
+2022-12-04,00:36:26.086 INFO {data_node} [forward] Forward end
+2022-12-04,00:36:26.087 INFO {data_node} [forward_file] Try to put file: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:26.087 INFO {data_node} [forward_file] Put file end: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:26.087 INFO {data_node} [forward_file] Put file f9bdfc5a739d11ed897f0050568d8cea,v1, current version is 1
+2022-12-04,00:36:26.397 INFO {data_node} [forward] Try to forward
+2022-12-04,00:36:26.398 INFO {data_node} [forward] Forward end
+2022-12-04,00:36:26.398 INFO {data_node} [forward_file] Try to put file: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:26.398 INFO {data_node} [forward_file] Put file end: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:26.398 INFO {data_node} [forward_file] Put file f9bdfc5a739d11ed897f0050568d8cea,v2, current version is 2
+2022-12-04,00:36:26.752 INFO {data_node} [forward] Try to forward
+2022-12-04,00:36:26.752 INFO {data_node} [forward] Forward end
+2022-12-04,00:36:26.784 INFO {data_node} [forward_file] Try to put file: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:26.807 INFO {data_node} [forward_file] Put file end: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:26.808 INFO {data_node} [forward_file] Put file f9bdfc5a739d11ed897f0050568d8cea,v3, current version is 3
+2022-12-04,00:36:27.161 INFO {data_node} [forward] Try to forward
+2022-12-04,00:36:27.161 INFO {data_node} [forward] Forward end
+2022-12-04,00:36:27.161 INFO {data_node} [forward_file] Try to put file: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:27.161 INFO {data_node} [forward_file] Put file end: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:27.161 INFO {data_node} [forward_file] Put file f9bdfc5a739d11ed897f0050568d8cea,v4, current version is 4
+2022-12-04,00:36:28.765 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:28.962 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:36:29.369 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:29.640 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:36:29.731 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:29.860 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:36:31.377 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:31.526 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:36:31.683 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:31.945 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:36:32.096 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:32.232 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:36:32.633 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:32.937 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:36:35.050 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:35.137 ERROR {gevent_zmq} [recv] /!\ gevent_zeromq BUG /!\ catching up after missing event (RECV) /!\
+2022-12-04,00:36:35.137 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:36:40.797 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:36:41.079 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:37:32.408 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:37:32.725 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:56:39.779 INFO {name_node} [run] Receive get request: f9bdfc5a739d11ed897f0050568d8cea
+2022-12-04,00:56:43.148 INFO {data_node} [get_file] Get file f9bdfc5a739d11ed897f0050568d8cea, current version is 4
+2022-12-04,00:56:46.885 INFO {name_node} [run] Receive get request: c6d135b4739d11ed897f0050568d8cea
+2022-12-04,01:01:14.235 WARNING {name_node} [safe_checker] Safe Checker: File f9bdfc5a739d11ed897f0050568d8cea lack 1 replica(s).
+2022-12-04,01:01:14.237 WARNING {name_node} [rreplica] Safe Checker: Start rereplica for f9bdfc5a739d11ed897f0050568d8cea

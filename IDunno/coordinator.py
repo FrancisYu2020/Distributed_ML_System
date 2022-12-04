@@ -3,6 +3,7 @@ import socket
 from glob_var import *
 from collections import deque, defaultdict
 import pickle
+import time
 
 
 class Coordinator:
@@ -13,6 +14,8 @@ class Coordinator:
         self.hostname = socket.gethostname()
         self.results = defaultdict(dict)
         self.dash = defaultdict(int)
+        self.timers = defaultdict(list)
+        self.prev_time = defaultdict(float)
         self.sync_c = zerorpc.Client(
             f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
 
@@ -64,6 +67,9 @@ class Coordinator:
         if task_id not in self.results[model_id]:
             self.dash[model_id] += 1
             self.results[model_id][task_id] = res
+            curr_time = time.time()
+            self.timers[model_id].append(curr_time - self.prev_time[model_id])
+            self.prev_time[model_id] = curr_time
 
         logging.info(f'Worker {worker} commit task {task_id}')
         if self.hostname == COORDINATOR_HOST:
@@ -95,7 +101,7 @@ class Coordinator:
         return
 
     def get_dash(self):
-        return pickle.dumps(self.dash)
+        return pickle.dumps([self.dash, self.timers])
 
     def get_res(self):
         return pickle.dumps(self.results)
