@@ -119,7 +119,7 @@ class Client():
             else:
                 vm_states["Idle"].append(vm)
         # TODO: complete print vm states part
-        for job, vms in vm_states:
+        for job, vms in vm_states.items():
             print("{}: {}".format(job, vms))
 
     def shell(self):
