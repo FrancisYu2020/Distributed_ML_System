@@ -52,15 +52,22 @@ class Client():
             job_name = self.jobs[job_id].name
             job_times = times[job_id]
             job_times.sort()
-            job_times = np.array(job_times)[10:]
+            job_times = np.array(job_times)[:-1]
+            avg = np.round(len(job_times)/job_times.sum(), 3)
+            # print(len(job_times), job_times.sum())
+            # print(job_times)
+            # job_times = np.array(job_times)[10:]
             query_rates = 1 / job_times
-            avg = np.round(query_rates.mean(), 3)
-            std = np.round(query_rates.std(), 3)
+            # avg = np.round(query_rates.mean(), 3)
+            std = np.round(query_rates.std() / 100, 3)
             median = np.round(query_rates[len(query_rates)//2], 3)
             percentile1 = np.round(query_rates[int(0.9 * len(query_rates))], 3) # 90 percentile
             percentile2 = np.round(query_rates[int(0.95 * len(query_rates))], 3) # 95 percentile
             percentile3 = np.round(query_rates[int(0.99 * len(query_rates))], 3) # 99 percentile
-            print(f'Job {job_name} finished {num} queries, query rate average = {avg}, std = {std}, median = {median}, 90 percentile = {percentile1}, 95 percentile = {percentile2}, 99 percentile = {percentile3}')
+            record = f'Job {job_name} finished {num} queries, query rate average = {avg}, std = {std}, median = {median}, 90 percentile = {percentile1}, 95 percentile = {percentile2}, 99 percentile = {percentile3}'
+            print(record)
+            with open('experiment.txt', 'a') as f:
+                f.write(record + '\n')
 
     def job_rates(self):
         print("We are working counting results, please wait for a moment :) ")
@@ -98,7 +105,10 @@ class Client():
             suf_num = suf_dash[job_id]
             job_name = self.jobs[job_id].name
             avg = suf_num - pre_num
-            print(f'Job {job_name} speed: {avg} queries / 10s.')
+            record = f'Job {job_name} speed: {avg} queries / 10s.'
+            print(record)
+            with open('experiment.txt', 'a') as f:
+                f.write(record + '\n')
 
     def get_results(self):
         try:
@@ -150,6 +160,19 @@ class Client():
             pass
         else:
             print(f"VM{idx} is not a coordinator!")
+
+    def experiment(self):
+        ts = 0
+        while 1:
+            if self.SHOULD_EXIT:
+                exit(0)
+            if len(self.jobs) < 1:
+                continue
+            else:
+                time.sleep(10)
+                ts += 10
+                print(f"# At timestamp = {ts}s:")
+                self.dashboard()
 
     def shell(self):
         hint = '''Welcome to IDunno, please choose command:
@@ -241,10 +264,13 @@ class Client():
 
     def run(self):
         t_shell = threading.Thread(target=self.shell)
+        t_experiment = threading.Thread(target=self.experiment)
         t_shell.start()
+        t_experiment.start()
         self.sub_task()
 
         t_shell.join()
+        t_experiment.join()
         t_sub_task.join()
 
 
