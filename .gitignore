@@ -6,6 +6,7 @@ IDunno/DNN_old.py
 sdfs/__pycache__/**
 sdfs/__pycache__
 sdfs/sdfs_log.log
+sdfs/store
 #sdfs
 #sdfs/**
 #script
