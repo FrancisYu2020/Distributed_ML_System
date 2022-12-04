@@ -37,13 +37,14 @@ class Client():
         try:
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash, times = c.get_dash()
+            bytes_dash, bytes_times = c.get_dash()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash, times = c.get_dash()
+            bytes_dash, bytes_times = c.get_dash()
         dash = pickle.loads(bytes_dash)
+        times = pickle.loads(bytes_times)
         for job_id in dash:
             num = dash[job_id]
             job_name = self.jobs[job_id].name
@@ -80,15 +81,16 @@ class Client():
         try:
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash, times = c.get_dash()
+            bytes_dash, _ = c.get_dash()
         except:
             self.coordinator_host = HOT_STANDBY_COORDINATOR_HOST
             c = zerorpc.Client(
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
-            bytes_dash, times = c.get_dash()
+            bytes_dash, _ = c.get_dash()
         suf_dash = pickle.loads(bytes_dash)
 
-        for job_id in pre_dash:
+        for job_id in pre_dash[0]:
+            print(job_id)
             pre_num = pre_dash[job_id]
             suf_num = suf_dash[job_id]
             job_name = self.jobs[job_id].name

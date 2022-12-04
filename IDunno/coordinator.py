@@ -65,6 +65,7 @@ class Coordinator:
         print(f'The Result of taks {task_id} is: {res}')
         self.worker_states[worker] = None
         if task_id not in self.results[model_id]:
+            # print(model_id, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
             self.dash[model_id] += 1
             self.results[model_id][task_id] = res
             curr_time = time.time()
@@ -101,7 +102,7 @@ class Coordinator:
         return
 
     def get_dash(self):
-        return pickle.dumps([self.dash, self.timers])
+        return pickle.dumps(self.dash), pickle.dumps(self.timers)
 
     def get_res(self):
         return pickle.dumps(self.results)
