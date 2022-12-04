@@ -45,19 +45,21 @@ class Client():
             bytes_dash, bytes_times = c.get_dash()
         dash = pickle.loads(bytes_dash)
         times = pickle.loads(bytes_times)
+        # print(dash)
+        # print(times.keys())
         for job_id in dash:
             num = dash[job_id]
             job_name = self.jobs[job_id].name
             job_times = times[job_id]
             job_times.sort()
-            job_times = np.array(job_times)
+            job_times = np.array(job_times)[10:]
             query_rates = 1 / job_times
-            avg = query_rates.avg()
-            std = query_rates.std()
-            median = query_rates[len(query_rates)//2]
-            percentile1 = query_rates[int(0.9 * len(query_rates))] # 90 percentile
-            percentile2 = query_rates[int(0.95 * len(query_rates))] # 95 percentile
-            percentile3 = query_rates[int(0.99 * len(query_rates))] # 99 percentile
+            avg = np.round(query_rates.mean(), 3)
+            std = np.round(query_rates.std(), 3)
+            median = np.round(query_rates[len(query_rates)//2], 3)
+            percentile1 = np.round(query_rates[int(0.9 * len(query_rates))], 3) # 90 percentile
+            percentile2 = np.round(query_rates[int(0.95 * len(query_rates))], 3) # 95 percentile
+            percentile3 = np.round(query_rates[int(0.99 * len(query_rates))], 3) # 99 percentile
             print(f'Job {job_name} finished {num} queries, query rate average = {avg}, std = {std}, median = {median}, 90 percentile = {percentile1}, 95 percentile = {percentile2}, 99 percentile = {percentile3}')
 
     def job_rates(self):
@@ -88,9 +90,10 @@ class Client():
                 f'tcp://{self.coordinator_host}:{COORDINATOR_PORT}')
             bytes_dash, _ = c.get_dash()
         suf_dash = pickle.loads(bytes_dash)
+        # print(pre_dash)
 
-        for job_id in pre_dash[0]:
-            print(job_id)
+        for job_id in pre_dash:
+            # print(job_id)
             pre_num = pre_dash[job_id]
             suf_num = suf_dash[job_id]
             job_name = self.jobs[job_id].name
