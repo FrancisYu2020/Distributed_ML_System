@@ -194,6 +194,7 @@ class Server:
         
 
     def shell(self):
+        self.join()
         while 1:
             print("=======================================================")
             print("1. list_mem: list current membership list in the ring")
@@ -204,6 +205,8 @@ class Server:
             print("6. exit: shutdown this node")
             print("=======================================================")
             print("Please input command:")
+            # time.sleep(0.2)
+            # self.join()
             command = input()
             if command == "list_mem":
                 with ML_lock:

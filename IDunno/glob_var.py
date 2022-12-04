@@ -1,5 +1,5 @@
 import time
-import socket
+import logging
 
 COORDINATOR_HOST = "fa22-cs425-2201.cs.illinois.edu"
 COORDINATOR_PORT = 8888
@@ -11,13 +11,20 @@ DATA_NODE_PORT = 6242
 MASTER_PORT = 2333
 FOLLOWER_PORT = 2334
 PING_PORT = [2345 + i for i in range(11)]
-SELF_HOST_NAME = socket.gethostname
+BATCH_SIZE = 16
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s',
+                    datefmt='%Y-%m-%d,%H:%M:%S',
+                    filename='log',
+                    filemode='w')
 
 
 class TestModel:
     def predict(self, params):
         time.sleep(3)
         return "Predict Test {} for TestModel".format(params)
+
 
 class AnotherModel:
     def predict(self, params):
