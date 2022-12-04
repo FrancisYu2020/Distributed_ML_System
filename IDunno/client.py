@@ -114,9 +114,13 @@ class Client():
         vms = pickle.loads(bytes_vms)
         vm_states = collections.defaultdict(list)
         for vm, job_id in vms.items():
-            vm_states[self.jobs[job_id].name].append(vm)
+            if job_id != "Idle":
+                vm_states[self.jobs[job_id].name].append(vm)
+            else:
+                vm_states["Idle"].append(vm)
         # TODO: complete print vm states part
-        print(vm_states)
+        for job, vms in vm_states:
+            print("{}: {}".format(job, vms))
 
     def shell(self):
         hint = '''Welcome to IDunno, please choose command:
@@ -143,7 +147,7 @@ class Client():
                     job_name, job_id, filelist, int(batch_size))
 
                 self.job_q.append(job_id)
-
+                print(f'Submit job {job_name} successful.')
             elif args[0] == "get-stats" and len(args) == 1:
                 self.dashboard()
             elif args[0] == "job-rates" and len(args) == 1:
@@ -157,6 +161,7 @@ class Client():
                             f'Set batch size of {job_name} job to {batch_size} successfully.')
             elif args[0] == "get-results" and len(args) == 1:
                 self.get_results()
+                print(f'All results have been stored in local.')
             elif args[0] == "vm-states" and len(args) == 1:
                 self.get_vm_states()
             elif args[0] == "help" and len(args) == 1:
