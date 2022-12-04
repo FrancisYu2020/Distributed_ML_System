@@ -69,6 +69,7 @@ class Worker:
     @log
     def exec_task(self, model, data):
         filelist, start, end = data
+        print(filelist)
         data = self.import_data(filelist, start, end)
         model.load_data(data)
         return model.predict()
