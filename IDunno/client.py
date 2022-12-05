@@ -8,6 +8,8 @@ import pickle
 import time
 import threading
 import numpy as np
+import random
+from collections import defaultdict
 
 class JobInfo():
     def __init__(self, name=None, job_id=None, files=None, batch_size=None):
@@ -123,10 +125,11 @@ class Client():
         res = pickle.loads(bytes_res)
         for model_id, tasks in res.items():
             name = self.jobs[model_id].name
-            sorted_res = sorted(tasks.items(), key=lambda x: x[0])
-            write_content = str([r[1] for r in sorted_res])
+            sorted_res = sorted(tasks.items(), key=lambda x: int(x[0].split(' ')[-1]))
+            write_content = [": ".join([r[0], "; ". join(r[1])]) for r in sorted_res]
+            # print(write_content)
             with open(f'{name}_query_results', 'w') as f:
-                f.write(write_content)
+                f.write("\n".join(write_content))
 
     def get_vm_states(self):
         try:
@@ -234,6 +237,7 @@ class Client():
                 print("Invalid command! If you need any help, please input 'help'.")
 
     def sub_task(self):
+        counters = defaultdict(int)
         while True:
             if self.SHOULD_EXIT:
                 exit(0)
@@ -241,12 +245,15 @@ class Client():
                 time.sleep(0.5)
             else:
                 job_id = self.job_q.popleft()
+                counters[job_id] += 1
                 self.job_q.append(job_id)
-                task_id = f'{job_id} {time.time()}'
+                task_id = f'{job_id} {counters[job_id]}'
                 filelist = self.jobs[job_id].files
+                total = len(filelist)
+                start_pos = random.randint(0, total // 2)
                 try:
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_id, filelist[0: self.jobs[job_id].batch_size]):
+                        if self.rpc_c.submit_task(task_id, job_id, filelist[start_pos: start_pos + self.jobs[job_id].batch_size]):
                             # print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
@@ -257,7 +264,7 @@ class Client():
                     self.rpc_c = zerorpc.Client(
                         f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_id, filelist[0: self.jobs[job_id].batch_size]):
+                        if self.rpc_c.submit_task(task_id, job_id, filelist[start_pos: start_pos + self.jobs[job_id].batch_size]):
                             break
                         else:
                             time.sleep(0.2)
