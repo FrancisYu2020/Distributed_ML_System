@@ -124,9 +124,9 @@ class Client():
         for model_id, tasks in res.items():
             name = self.jobs[model_id].name
             sorted_res = sorted(tasks.items(), key=lambda x: x[0])
-            write_content = str([r[1] for r in sorted_res])
+            write_content = [r[1] for r in sorted_res]
             with open(f'{name}_query_results', 'w') as f:
-                f.write(write_content)
+                f.write("\n".join(write_content))
 
     def get_vm_states(self):
         try:
