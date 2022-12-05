@@ -4,6 +4,8 @@ IDunno/__pycache__
 IDunno/log
 IDunno/DNN_old.py
 IDunno/experiment.txt
+IDunno/resnet18_query_results
+IDunno/alexnet_query_results
 sdfs/__pycache__/**
 sdfs/__pycache__
 sdfs/sdfs_logs.log

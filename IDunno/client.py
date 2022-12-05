@@ -244,9 +244,11 @@ class Client():
                 self.job_q.append(job_id)
                 task_id = f'{job_id} {time.time()}'
                 filelist = self.jobs[job_id].files
+                total = len(filelist)
+                start_pos = random.randint(0, total // 2)
                 try:
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_id, filelist[0: self.jobs[job_id].batch_size]):
+                        if self.rpc_c.submit_task(task_id, job_id, filelist[start_pos: start_pos + self.jobs[job_id].batch_size]):
                             # print(f'Submit task {task_id} for {job_name} successful.')
                             break
                         else:
@@ -257,7 +259,7 @@ class Client():
                     self.rpc_c = zerorpc.Client(
                         f'tcp://{HOT_STANDBY_COORDINATOR_HOST}:{COORDINATOR_PORT}')
                     while True:
-                        if self.rpc_c.submit_task(task_id, job_id, filelist[0: self.jobs[job_id].batch_size]):
+                        if self.rpc_c.submit_task(task_id, job_id, filelist[start_pos: start_pos + self.jobs[job_id].batch_size]):
                             break
                         else:
                             time.sleep(0.2)
