@@ -8,6 +8,7 @@ import pickle
 import time
 import threading
 import numpy as np
+import random
 
 class JobInfo():
     def __init__(self, name=None, job_id=None, files=None, batch_size=None):
