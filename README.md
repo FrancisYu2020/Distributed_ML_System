@@ -1,4 +1,4 @@
-# MP4-hangy6-tian23 IDunno, a Distributed Learning Cluster
+# IDunno, a Distributed Machine Learning Cluster
 
 ## Description
 We build on top of our previous implementation of swim-like ping ack failure detector and HDFS-like Simple Distributed File System (SDFS) to implement the distributed learning cluster, Illinois DNNs (IDunno). This Machine Learning platform provides training and inference features for a neural network or multiple networks simultaneously. You can implement your own network, train and do inference on IDunno. You can also skip the training phase by load pre-trained models and start model serving.
@@ -68,7 +68,7 @@ job-rates
 set-batch <job name> <batch size>
 get-results
 vm-states
-kill <worker/coordinator> <vm id>
+exit
 ```
 
 Alternatively, you can use the provided scripts to start SDFS/coordinates/workers quickly. To use the scripts, first, use:
@@ -85,7 +85,7 @@ This is for the convenience of shutting down the workers during IDunno is runnin
 Finally, start the client and do the job using the command mentioned above!
 
 ## Support
-If you have any questions, please contact tian23@illinois.edu or hangy6@illinois.edu
+If you have any questions, please contact hangy6@illinois.edu or tian23@illinois.edu
 
 ## Authors 
-Tian Luan & Hang Yu
+Hang Yu & Tian Luan
